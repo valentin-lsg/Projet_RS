@@ -1,0 +1,29 @@
+body{
+    background-color: #110D44;
+}
+
+h1{
+    color: #F5F5F5;
+}
+
+label{
+    color: #F5F5F5;
+}
+
+a{
+    color: #F5F5F5;
+}
+
+.logo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40%;
+}
+
+.formulaire{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+}
