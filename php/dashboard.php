@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+/* $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT); */
 
 
 if(!isset($_SESSION["username"])) { 

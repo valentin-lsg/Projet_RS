@@ -2,44 +2,44 @@
 session_start();
 
 $login = filter_input(INPUT_POST, "login"); 
-$username = filter_input(INPUT_POST, "username");
+$username1 = filter_input(INPUT_POST, "username");
 $candidate_password = filter_input(INPUT_POST, "password");
 
 
-function seConnecter($login, $username, $candidate_password){
-    require_once("pdo/pdo.php");
+function seConnecter($login, $username1, $candidate_password){
+    
     if(isset($login)){ // 
-        if($username=="" or $candidate_password==""){
+        if($username1==NULL or $candidate_password==NULL){
             echo '<script>','alert("Erreur ! Veuillez remplir les champs.")','</script>';
+            return;
         }
     };
-
+    
+    require("../pdo/pdo.php");
     $marequete = $pdo->prepare("SELECT * FROM users where username = :username"); 
     $marequete->execute([
-        ":username" => $username
+        ":username" => $username1
     ]);
     $row = $marequete->fetch(PDO::FETCH_ASSOC); 
+    var_dump($row["id"]);
+    
 
-    if($row){ 
-        
-            if(password_verify($candidate_password, $row["password"])){
-                $_SESSION["user"]=$username;
-                $_SESSION["id"]=$row["id"];
-                http_response_code(302);
-                header("location: dashboard.php");
-                exit();
-            } else { // Erreur password
-                echo '<script>','alert("Le mot de passe est faux.")','</script>'; 
-            }
-            } else if($username != $row["username"]) { // Erreur username
-            echo '<script>','alert("Le nom d"utilisateur est faux.")','</script>';
+    if(password_verify($candidate_password, $row["password"])){
+        $_SESSION["user"]=$username1;
+        $_SESSION["id"]=$row["id"];
+        http_response_code(302);
+        header("location: dashboard.php");
+        exit();
     }
+        
+    
+    
 
 
 };
 
 // Fonction qui permet de se connecter
-seConnecter($login, $username, $candidate_password);
+seConnecter($login, $username1, $candidate_password);
 
 
 
