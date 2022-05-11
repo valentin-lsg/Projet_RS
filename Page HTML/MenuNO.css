@@ -1,0 +1,21 @@
+.messages{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #aec6cf;
+    border: 20px solid #aec6cf;
+    border-radius: 10px;
+    margin-left: 60%;
+    margin-right: 1em;
+    margin-top: 1em;
+    padding : 1em;
+}
+
+.userInput{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 60%;
+    margin-right: 1em;
+    padding : 1em;
+}
