@@ -20,7 +20,7 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
                 ":username"  => $username1             
             ]);
             header('Location: login.php');
-            echo '<script>','alert("Vous avez été correctement inscrit en tant que '.$username1.' ")'.'</script>';
+            /* echo '<script>','alert("Vous avez été correctement inscrit en tant que '.$username1.' ")'.'</script>'; */
             } catch (\PDOException $e) {
                 if ($e->errorInfo[1] == 1062) {
                     echo '<script>','alert("Erreur, votre requête a été annulée.")','</script>';
@@ -30,4 +30,33 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
         }
     }
 
+};
+
+function seConnecter($login, $username1, $candidate_password){
+    
+    if(!$login){ // 
+        if($username1==NULL or $candidate_password==NULL){
+            echo '<script>','alert("Erreur ! Veuillez remplir les champs.")','</script>';
+            return;
+        }
+    };
+    
+    require("../pdo/pdo.php");
+    $marequete = $pdo->prepare("SELECT * FROM users where username = :username"); 
+    $marequete->execute([
+        ":username" => $username1
+    ]);
+    $row = $marequete->fetch(PDO::FETCH_ASSOC); 
+       
+
+    if(password_verify($candidate_password, $row["password"])){
+        $_SESSION["username"]=$username1;
+        $_SESSION["id"]=$row["id"];
+        http_response_code(302);
+        header("location: dashboard.php");
+        exit();
+    } else {
+        echo '<script>','alert("Le mot de passe est faux.")'.'</script>';
+
+    }
 };

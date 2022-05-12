@@ -12,6 +12,7 @@ $password = filter_input(INPUT_POST, "password");
 $mail = filter_input(INPUT_POST, "mail", FILTER_VALIDATE_EMAIL);
 
 
+// Envoi les données de l'utilisateur dans la base de donnée
 include("fonctionsPHP.php");
 
 // Verifier la date pour qu'elle ne soit pas bizarre

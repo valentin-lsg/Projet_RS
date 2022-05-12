@@ -1,10 +1,10 @@
 <?php
-$engine = "mysql";
-$host = "localhost";
-$port = 3306;
-$dbname = "no";
-$username = "root";
-$password = "root";
+$__engine = "mysql";
+$__host = "localhost";
+$__port = 3306;
+$__dbname = "no";
+$__username = "root";
+$__password = "root";
 
-$pdo = new PDO("$engine:host=$host:$port;dbname=$dbname", $username, $password);
+$pdo = new PDO("$__engine:host=$__host:$__port;dbname=$__dbname", $__username, $__password);
 
