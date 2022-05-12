@@ -1,12 +1,12 @@
 <?php
 session_start();
-$connected = 0;
+
 
 include("fonctionsPHP.php");
 
 // Ne se lance que si on est en post
+// id : riri , mdp = test
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-    
     $login = filter_input(INPUT_POST, "login"); 
     $username1 = filter_input(INPUT_POST, "username");
     $candidate_password = filter_input(INPUT_POST, "password");
@@ -48,25 +48,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="formulaire">
                     <h1>Bienvenue sur Night~of~Owls Social Club</h1>
 
-                    <form class="row g-3 needs-validation" novalidate>
+                    <form action="" method="POST" class="row g-3 needs-validation" novalidate>
                         <div class="col-md-4">
-                            <label for="validationCustom03" class="form-label">Adresse Mail</label>
-                            <input type="text" class="form-control" id="validationCustom03" placeholder="b.hermite@illuminati.fr" required>
+                            <label for="validationCustom03" class="form-label">Nom d'utilisateur</label>
+                            <input name="username" type="text" class="form-control" id="validationCustom03" placeholder="test123" required>
                             <div class="invalid-feedback">
-                                Veuillez entrer votre adresse mail
+                                Veuillez entrer votre nom d'utilisateur
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label for="validationCustom05" class="form-label">Mot de Passe</label>
-                            <input type="text" class="form-control" id="validationCustom05" placeholder="@SuperMDP1234" required>
+                            <input name="password" type="password" class="form-control" id="validationCustom05" placeholder="********" required>
                             <div class="invalid-feedback">
                                 Choisir un mot de passe valide
                             </div>
                         </div>
                         <div class="col-12">
-                            <form>
-                                <button class="btn btn-primary" type="submit" formaction='MenuNO.html'>Connexion</button>
-                            </form>
+                            
+                            <button class="btn btn-primary" type="submit" name="login">Se connecter</button>
+
                         </div>
                         <a href="register.php">S'inscrire en cliquant ici</a>
                     </form>
@@ -79,34 +79,3 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </body>
 </html>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NightOwl</title>
-
-</head>
-<body>
-
-    <h2>Login</h2>
-    <form method="post" action="">
-        <label for="username">Identifiant :</label>
-        <br>
-        <input type="text" name="username" placeholder="Username">
-        <br>
-        <label for="password">Mot de passe :</label>
-        <br>
-        <input type="password" name="password" placeholder="********">
-        <br>
-        <button type="submit" name="login">Se connecter</button>
-        
-    </form>
-    <a href="register.php"><button name="register">Inscription</button></a>
-
-
-</body>
-</html>
- -->

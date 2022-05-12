@@ -33,7 +33,6 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
 };
 
 function seConnecter($login, $username1, $candidate_password){
-    
     if(!$login){ // 
         if($username1==NULL or $candidate_password==NULL){
             echo '<script>','alert("Erreur ! Veuillez remplir les champs.")','</script>';
@@ -56,7 +55,7 @@ function seConnecter($login, $username1, $candidate_password){
         header("location: dashboard.php");
         exit();
     } else {
-        echo '<script>','alert("Le mot de passe est faux.")'.'</script>';
+        echo '<script>','alert("Vos informations de connexion sont incorrectes.")'.'</script>';
 
     }
 };
