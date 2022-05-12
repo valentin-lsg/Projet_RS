@@ -18,9 +18,9 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
                 ":phone" => $phone,
                 ":account_state" => 0,
                 ":username"  => $username1             
-            ]);
-            header('Location: login.php');
+            ]);            
             /* echo '<script>','alert("Vous avez été correctement inscrit en tant que '.$username1.' ")'.'</script>'; */
+            header('Location: login.php');
             } catch (\PDOException $e) {
                 if ($e->errorInfo[1] == 1062) {
                     echo '<script>','alert("Erreur, votre requête a été annulée.")','</script>';
