@@ -34,9 +34,9 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
             // REQUETE 3 : Création d'un profil temporaire.
             $maRequete = $pdo->prepare("INSERT INTO profil (banner, profil_picture, description, user_id) VALUES (:banner, :profil_picture, :description, :user_id);");
             $maRequete->execute([
-            ":banner" => 0, 
-            ":profil_picture" => 0, 
-            ":description" => 0, 
+            ":banner" => "../upload/default_banner.png", 
+            ":profil_picture" => "../upload/default_pp.png", 
+            ":description" => "Ceci est la description de"." ".$username1, 
             ":user_id" => $idDeMonUser["id"]
             ]);
 
@@ -110,11 +110,6 @@ function uploadMaPhoto(){
                 $myFilePath = "../upload/".$fileName;
                 move_uploaded_file($_FILES['profilPicture']['tmp_name'], $myFilePath);
                 
-                // Affichage de l'image
-                /* echo "<img style='width: 10%;' src='$myFilePath' alt='votreImage'>".'<br>'; */
-                /* echo "Votre fichier a été stocké à l'emplacement suivant : ".$myFilePath.'<br>'; */
-                
-
             }else {
                 $error = 1;
             }
@@ -130,6 +125,14 @@ function uploadMaPhoto(){
         echo "Erreur, votre photo n'a pas été upload.";
         $error = 0;
     } else {
+        require("../pdo/pdo.php");
+        $id = $_SESSION["id"];
+        $profil_picture = $myFilePath;
+        $maRequete = $pdo->prepare("UPDATE profil SET profil_picture=:profil_picture WHERE user_id=:id");
+        $maRequete->execute([
+        ":profil_picture" => $profil_picture,
+        ":id" => $id
+        ]);
         http_response_code(302);
         header("location: dashboard.php");
         exit();
@@ -139,3 +142,16 @@ function uploadMaPhoto(){
 function uploadMaBanniere(){
 
 };
+
+function afficherMonImageDeProfil(){
+    require("../pdo/pdo.php");
+    $id = $_SESSION["id"];
+    $maRequete = $pdo->prepare("SELECT * from profil where id=:id");
+    $maRequete->execute([
+    ":id" => $id
+    ]);
+    $result = $maRequete->fetch();
+    $imageDeMonUser = $result["profil_picture"];
+    echo $imageDeMonUser;
+    echo "<img style='width: 10%;' src='$imageDeMonUser' alt='Image de profil'>".'<br>';
+}

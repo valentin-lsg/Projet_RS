@@ -10,6 +10,7 @@ include("fonctionsPHP.php");
 checkLogin();
 
 
+
 ?> 
 
 <!DOCTYPE html>
@@ -21,6 +22,15 @@ checkLogin();
     <title>Document</title>
 </head>
 <body>
+    <!-- Afficher son image de profil -->
+    <p>Votre image de profil actuel est :</p>
+    <?php 
+    
+    afficherMonImageDeProfil();
+        
+    ?>
+
+    <!-- Ajouter sa photo de profil -->
     <a href="profil_setting.php">Ajouter une photo de profil</a>
     <br>
     <!-- <a href="profil_setting.php">Ajouter une bannière</a> -->
