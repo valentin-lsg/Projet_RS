@@ -4,11 +4,11 @@ session_start();
 $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
 // Commentaire
-if(!isset($_SESSION["username"])) { 
-    http_response_code(302);
-    header('Location: login.php');
-    exit();
-} 
+// faire une fonction avec ça dedans pour l'utiliser partout checkLogin();
+include("fonctionsPHP.php");
+
+checkLogin();
+
 
 ?> 
 
@@ -21,9 +21,10 @@ if(!isset($_SESSION["username"])) {
     <title>Document</title>
 </head>
 <body>
-    <?php 
-    echo "<h1> ma page dashboard </h1>"
-    ?>
+    <a href="profil_setting.php">Ajouter une photo de profil</a>
+    <br>
+    <!-- <a href="profil_setting.php">Ajouter une bannière</a> -->
+
     <a href="deconnexion.php">Se deconnecter</a>
 </body>
 </html>
