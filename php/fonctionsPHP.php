@@ -98,18 +98,16 @@ function checkLogin(){
 function uploadMaPhoto(){
     $error = 0;
     if(isset($_FILES['profilPicture']) && $_FILES['profilPicture']['error'] == 0){
-        // La size de la photo de profil doit être inférieur à 10mo.
         if($_FILES['profilPicture']['size'] <= 10000000){
             $imageInfos = pathinfo($_FILES['profilPicture']['name']);
             $extensionImage = $imageInfos['extension'];
             $extensionAutorisee = array('png', 'jpeg', 'jpg', 'gif');
-        
 
             if(in_array($extensionImage, $extensionAutorisee)){
                 $fileName = time().rand().'.'.$extensionImage;
-                $myFilePath = "../upload/".$fileName;
+                $myFilePath = "../upload/profil/".$fileName;
                 move_uploaded_file($_FILES['profilPicture']['tmp_name'], $myFilePath);
-                
+
             }else {
                 $error = 1;
             }
@@ -140,6 +138,45 @@ function uploadMaPhoto(){
 };
 
 function uploadMaBanniere(){
+    $error = 0;
+    if(isset($_FILES['banner']) && $_FILES['banner']['error'] == 0){
+        if($_FILES['banner']['size'] <= 10000000){
+            $imageInfos = pathinfo($_FILES['banner']['name']);
+            $extensionImage = $imageInfos['extension'];
+            $extensionAutorisee = array('png', 'jpeg', 'jpg', 'gif');
+
+            if(in_array($extensionImage, $extensionAutorisee)){
+                $fileName = time().rand().'.'.$extensionImage;
+                $myFilePath = "../upload/banner/".$fileName;
+                move_uploaded_file($_FILES['banner']['tmp_name'], $myFilePath);
+                
+            }else {
+                $error = 1;
+            }
+
+        } else {
+            $error = 1;
+        }
+    }else{
+        $error = 1;
+    }
+
+    if($error == 1){
+        echo "Erreur, votre banniere n'a pas été upload.";
+        $error = 0;
+    } else {
+        require("../pdo/pdo.php");
+        $id = $_SESSION["id"];
+        $banner = $myFilePath;
+        $maRequete = $pdo->prepare("UPDATE profil SET banner=:banner WHERE user_id=:id");
+        $maRequete->execute([
+        ":banner" => $banner,
+        ":id" => $id
+        ]);
+        http_response_code(302);
+        header("location: dashboard.php");
+        exit();
+    }
 
 };
 
@@ -152,6 +189,34 @@ function afficherMonImageDeProfil(){
     ]);
     $result = $maRequete->fetch();
     $imageDeMonUser = $result["profil_picture"];
-    echo $imageDeMonUser;
     echo "<img style='width: 10%;' src='$imageDeMonUser' alt='Image de profil'>".'<br>';
-}
+};
+
+function afficherMaBanniere(){
+    require("../pdo/pdo.php");
+    $id = $_SESSION["id"];
+    $maRequete = $pdo->prepare("SELECT * from profil where id=:id");
+    $maRequete->execute([
+    ":id" => $id
+    ]);
+    $result = $maRequete->fetch();
+    $banniereDeMonUser = $result["banner"];
+    
+    echo "<img style='width: 10%;' src='$banniereDeMonUser' alt='Banniere de profil'>".'<br>';
+};
+
+function afficherMaBiographie(){
+    require("../pdo/pdo.php");
+    $id = $_SESSION["id"];
+    $maRequete = $pdo->prepare("SELECT * from profil where id=:id");
+    $maRequete->execute([
+    ":id" => $id
+    ]);
+    $result = $maRequete->fetch();
+    $bioDeMonUser = $result["description"];
+    echo "<h3>$bioDeMonUser</h3>".'<br>';
+};
+
+function afficherMonUsername(){
+    echo $_SESSION["username"];
+};
