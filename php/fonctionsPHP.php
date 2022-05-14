@@ -241,6 +241,7 @@ function fromTableUsers(){
 
 function changerInfoPerso($userInfos){
     if($_SERVER["REQUEST_METHOD"] == "POST"){
+       
         $lastname = filter_input(INPUT_POST,"lastname"); 
         $name = filter_input(INPUT_POST,"name");
         $country = filter_input(INPUT_POST,"country");
@@ -322,11 +323,51 @@ function changerInfoPerso($userInfos){
         };
 
         if($changementEffectue > 0){
-            echo '<center>Les changements ont été effectués.</center>';
-            /* http_response_code(302);
+            http_response_code(302);
             header("location: personnalSetting.php");
-            exit(); */
+            exit();
         };
+        
 
     }
+};
+
+function changePassword(){
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $actualPassword = filter_input(INPUT_POST, "actualPassword");
+        $newPassword = filter_input(INPUT_POST, 'newPassword');
+        $newPasswordConfirmed = filter_input(INPUT_POST, 'newPasswordConfirmed');
+        
+        
+        if($actualPassword && $newPassword && $newPasswordConfirmed){
+            if($newPassword == $newPasswordConfirmed){
+                $donneeDeMonUser = fromTableUsers();
+
+                if(password_verify($actualPassword, $donneeDeMonUser["password"])){
+                    require("../pdo/pdo.php");
+                    $id = $_SESSION["id"];
+                    $hashPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                    $maRequete = $pdo->prepare("UPDATE users SET password=:password WHERE id=:id");
+                    $maRequete->execute([
+                        ":id" => $id,
+                        ":password" => $hashPassword
+                        ]);
+                    echo "<center>Le mot de passe a été changé.</center>";
+
+                } else {
+                    /* echo "<script> alert('Le mot de passe actuel ne correspond pas !') </script>"; */
+                    echo "<center>Le mot de passe actuel ne correspond pas.</center>";
+                }
+
+            }else{
+                /* echo "<script> alert('Les deux mots de passe ne correspondent pas. !') </script>"; */
+                echo "<center>Le nouveau mot de passe ne correspond pas au mot de passe de confirmation.</center>";
+            }
+            
+        } else {
+            /* echo "<script> alert('Un des champs est vide !') </script>"; */
+            echo "<center>Un des champs est vide.</center>";
+        }
+    } 
+    
 };

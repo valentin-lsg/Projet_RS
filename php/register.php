@@ -78,7 +78,7 @@ if(isset($register)){
                         </div>
                         <div class="col-md-4">
                             <label for="validationCustom05" class="form-label">Mot de Passe</label>
-                            <input type="password" name ="password" class="form-control" id="validationCustom05" placeholder="********" required>
+                            <input type="password" name ="password" pattern="[A-Za-z0-9]+" class="form-control" id="validationCustom05" placeholder="********" required>
                             <div class="invalid-feedback">
                                 Choisir un mot de passe valide
                             </div>
