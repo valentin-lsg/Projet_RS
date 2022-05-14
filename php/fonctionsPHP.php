@@ -92,8 +92,67 @@ function checkLogin(){
         http_response_code(302);
         header('Location: login.php');
         exit();
+    }
+    checkAccountState();
+};
+
+function checkAccountState(){
+    $monUser = fromTableUsers();
+    $userAccountState= $monUser["account_state"];
+    if($userAccountState == 1){
+        http_response_code(302);
+        header("location: reactivateAccount.php");
+        exit();
     } 
 };
+
+function gererMonCompte(){
+    $desactiverCompte = filter_input(INPUT_POST, "desactiverCompte");
+    $reactiverCompte = filter_input(INPUT_POST, "reactiverCompte");
+    $supprimerCompte = filter_input(INPUT_POST, "supprimerCompte");
+
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        if(isset($desactiverCompte)){
+            require("../pdo/pdo.php");
+            $id = $_SESSION["id"];
+            $maRequete = $pdo->prepare("UPDATE users SET account_state=:account_state WHERE id=:id");
+            $maRequete->execute([
+            ":account_state" => 1,
+            ":id" => $id
+            ]);
+            http_response_code(302);
+            header("location: deconnexion.php");
+            exit();
+
+        } else if(isset($reactiverCompte)){
+            require("../pdo/pdo.php");
+            $id = $_SESSION["id"];
+            $maRequete = $pdo->prepare("UPDATE users SET account_state=:account_state WHERE id=:id");
+            $maRequete->execute([
+            ":account_state" => 0,
+            ":id" => $id
+            ]);
+            http_response_code(302);
+            header("location: login.php");
+            exit();
+
+        } else if(isset($supprimerCompte)){
+            require("../pdo/pdo.php");
+            $id = $_SESSION["id"];
+            $maRequete = $pdo->prepare("DELETE from users where id=:id");
+            $maRequete->execute([
+            ":id" => $id
+            ]);
+            http_response_code(302);
+            header("location: login.php");
+            exit();
+        } 
+    }
+};
+
+
+
+
 
 function uploadMaPhoto(){
     $error = 0;
@@ -248,11 +307,12 @@ function changerInfoPerso($userInfos){
         $birthday = filter_input(INPUT_POST,"birthday");
         $phone = filter_input(INPUT_POST,"phone", FILTER_SANITIZE_NUMBER_INT); 
         $username1 = filter_input(INPUT_POST, "username");
-        $password = filter_input(INPUT_POST, "password");
         $mail = filter_input(INPUT_POST, "mail", FILTER_VALIDATE_EMAIL);
+
         require("../pdo/pdo.php");
         $id = $_SESSION["id"];
         $changementEffectue = 0;
+
 
         if($lastname){
             $maRequete = $pdo->prepare("UPDATE users SET lastname=:lastname WHERE id=:id");
@@ -308,10 +368,7 @@ function changerInfoPerso($userInfos){
             $changementEffectue++;
 
         };
-        if($password){
-            return;
-            $changementEffectue++;
-        };
+        
         if($mail){
             $maRequete = $pdo->prepare("UPDATE users SET mail=:mail WHERE id=:id");
             $maRequete->execute([
@@ -364,7 +421,7 @@ function changePassword(){
                 echo "<center>Le nouveau mot de passe ne correspond pas au mot de passe de confirmation.</center>";
             }
             
-        } else {
+        } else if($actualPassword or $newPassword or $newPasswordConfirmed){
             /* echo "<script> alert('Un des champs est vide !') </script>"; */
             echo "<center>Un des champs est vide.</center>";
         }

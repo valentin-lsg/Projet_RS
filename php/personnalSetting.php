@@ -4,9 +4,9 @@ include("fonctionsPHP.php");
 checkLogin();
 
 $userInfos = fromTableUsers();
-
 changerInfoPerso($userInfos);
 changePassword();
+gererMonCompte();
 
 
 ?>
@@ -36,8 +36,11 @@ changePassword();
         <span>Nom d'utilisateur : <?= $userInfos["username"] ?></span><br>
 
         <!-- Créer des fonctions pour ceci -->
-        <button style="color:orange">Desactiver votre compte</button><br>
-        <button style="color:red">Supprimer définitement votre compte</button>
+        <form action="" method="post">
+            
+            <button name="desactiverCompte" type="submit" style="color:orange">Desactiver votre compte</button><br>
+            <button name="supprimerCompte" type="submit" style="color:red">Supprimer définitement votre compte</button>
+        </form>
     </section>
 
     <!-- Modifier les infos de l'utilisateur + confirmation avec mot de passe. -->

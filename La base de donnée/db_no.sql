@@ -30,7 +30,7 @@ CREATE TABLE `friendlist` (
   `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `friendlist_user_id_foreign` (`user_id`),
-  CONSTRAINT `friendlist_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `friendlist_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -87,8 +87,8 @@ CREATE TABLE `group_post` (
   PRIMARY KEY (`id`),
   KEY `group_post_group_id_foreign` (`group_id`),
   KEY `group_post_who_post_foreign` (`who_post`),
-  CONSTRAINT `group_post_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`),
-  CONSTRAINT `group_post_who_post_foreign` FOREIGN KEY (`who_post`) REFERENCES `users` (`id`)
+  CONSTRAINT `group_post_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `group_post_who_post_foreign` FOREIGN KEY (`who_post`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -115,7 +115,7 @@ CREATE TABLE `message` (
   `who_receive` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `message_who_send_foreign` (`who_send`),
-  CONSTRAINT `message_who_send_foreign` FOREIGN KEY (`who_send`) REFERENCES `users` (`id`)
+  CONSTRAINT `message_who_send_foreign` FOREIGN KEY (`who_send`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -144,7 +144,7 @@ CREATE TABLE `page` (
   `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_user_id_foreign` (`user_id`),
-  CONSTRAINT `page_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `page_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -172,7 +172,7 @@ CREATE TABLE `post` (
   `commentary` json NOT NULL,
   PRIMARY KEY (`id`),
   KEY `profil_user_id_foreign` (`user_id`),
-  CONSTRAINT `profil_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `profil_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -196,12 +196,12 @@ CREATE TABLE `profil` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `banner` varchar(255) NOT NULL,
   `profil_picture` varchar(255) NOT NULL,
-  `description` json NOT NULL,
+  `description` text NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `profil_id_foreign_key` (`user_id`),
-  CONSTRAINT `profil_id_foreign_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `profil_id_foreign_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,6 +210,7 @@ CREATE TABLE `profil` (
 
 LOCK TABLES `profil` WRITE;
 /*!40000 ALTER TABLE `profil` DISABLE KEYS */;
+INSERT INTO `profil` VALUES (1,'../upload/default_banner.png','../upload/default_pp.png','Ceci est la description de imageban',1),(2,'../upload/banner/1652514447494627186.png','../upload/profil/1652514447968063050.png','mon profil est bg',2);
 /*!40000 ALTER TABLE `profil` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,8 +232,8 @@ CREATE TABLE `user_membership` (
   PRIMARY KEY (`id`),
   KEY `user_membership_user_id_foreign` (`user_id`),
   KEY `user_membership_user_group_foreign` (`user_group`),
-  CONSTRAINT `user_membership_user_group_foreign` FOREIGN KEY (`user_group`) REFERENCES `group` (`id`),
-  CONSTRAINT `user_membership_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `user_membership_user_group_foreign` FOREIGN KEY (`user_group`) REFERENCES `group` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_membership_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -266,15 +267,16 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `mail` (`mail`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `users`
---
+
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'test','test','test@mvcdlg.Fr','France','$2y$10$yVpQ1YYb8qA/O64npmbArOhObYAbC.IHHiOvr4cZdH1TDmZ/T0pUG','2000-01-01','0611223344','0','imageban'),(2,'fezfzef','admin','ryuboknk@live.fr','France','$2y$10$qyEaDl/peKzdXNjXRSw1tuUeW9aAYzhXgOkJxJXZSPCKWm5umX59a','2020-11-29','0123456789','0','admin');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -287,4 +289,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-12 12:04:41
+-- Dump completed on 2022-05-14 22:02:15
