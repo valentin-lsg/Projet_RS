@@ -110,13 +110,7 @@ if(isset($register)){
                         <div class="col-md-3">
                             <label for="validationCustom04" class="form-label">Localisation</label>
                             <select name="country" class="form-select" id="validationCustom04" required>
-                                <option selected disabled value="">Choisir...</option>
-                                <option>...</option>
-                                <option>France</option>
-                                <option>Asgard</option>
-                                <option>Eldorado</option>
-                                <option>Tartare</option>
-                                <option>Valhalla</option>
+                                <?php include("select.php") ?>
                             </select>
                             <div class="invalid-feedback">
                                 Veuillez choisir un lieu valide

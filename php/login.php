@@ -6,7 +6,7 @@ include("fonctionsPHP.php");
 
 // Ne se lance que si on est en post
 // modal boostrap css
-// id : riri , mdp = test
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $login = filter_input(INPUT_POST, "login"); 
     $username1 = filter_input(INPUT_POST, "username");

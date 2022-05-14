@@ -1,10 +1,6 @@
 <?php 
 session_start();
 
-/* $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
- */
-// Commentaire
-// faire une fonction avec ça dedans pour l'utiliser partout checkLogin();
 include("fonctionsPHP.php");
 
 checkLogin();
@@ -52,19 +48,11 @@ checkLogin();
     <br>
 
     <!-- Ajouter sa photo de profil -->
-    <a href="profil_setting.php">Editer mon profil</a>
+    <a href="profilSetting.php">Editer mon profil</a>
     <br>
 
-        <!-- ON DOIT POUVOIR MODIFIER TOUTES NOS INFOS PERSONNELS -->
-
-    <!-- <a href="profil_setting.php">Modifier ma biographie</a> -->
-    <br>
-    <!-- <a href="profil_setting.php">Changer mon username</a> -->
-    <br>
-    <!-- <a href="profil_setting.php">Desactiver son compte</a> -->
-    <br>
-    <!-- <a href="profil_setting.php">Supprimer son compte</a> -->
-    
+    <a href="personnalSetting.php">Editer vos infos persos</a>
+    <br>  
 
     <a href="deconnexion.php">Se deconnecter</a>
 </body>

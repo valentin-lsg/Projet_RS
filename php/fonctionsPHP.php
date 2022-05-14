@@ -116,13 +116,13 @@ function uploadMaPhoto(){
             $error = 1;
         }
     }else{
-        $error = 1;
+        $error = 2;
     }
 
     if($error == 1){
         echo "Erreur, votre photo n'a pas été upload.";
         $error = 0;
-    } else {
+    } else if($error == 0) {
         require("../pdo/pdo.php");
         $id = $_SESSION["id"];
         $profil_picture = $myFilePath;
@@ -131,9 +131,11 @@ function uploadMaPhoto(){
         ":profil_picture" => $profil_picture,
         ":id" => $id
         ]);
-        http_response_code(302);
+        /* http_response_code(302);
         header("location: dashboard.php");
-        exit();
+        exit(); */
+    } else {
+        return;
     }
 };
 
@@ -158,13 +160,12 @@ function uploadMaBanniere(){
             $error = 1;
         }
     }else{
-        $error = 1;
+        $error = 2;
     }
 
     if($error == 1){
         echo "Erreur, votre banniere n'a pas été upload.";
-        $error = 0;
-    } else {
+    } else if($error == 0) {
         require("../pdo/pdo.php");
         $id = $_SESSION["id"];
         $banner = $myFilePath;
@@ -173,14 +174,27 @@ function uploadMaBanniere(){
         ":banner" => $banner,
         ":id" => $id
         ]);
-        http_response_code(302);
+        /* http_response_code(302);
         header("location: dashboard.php");
-        exit();
+        exit(); */
+    } else {
+        return;
     }
 
 };
 
-function afficherMonImageDeProfil(){
+function changeDescriptionUser($laNouvelleDescription){
+    require("../pdo/pdo.php");
+    $id = $_SESSION["id"];
+    $description = $laNouvelleDescription;
+    $maRequete = $pdo->prepare("UPDATE profil SET description=:description WHERE user_id=:id");
+    $maRequete->execute([
+    ":description" => $description,
+    ":id" => $id
+    ]);
+};
+
+function fromTableProfil(){
     require("../pdo/pdo.php");
     $id = $_SESSION["id"];
     $maRequete = $pdo->prepare("SELECT * from profil where id=:id");
@@ -188,35 +202,128 @@ function afficherMonImageDeProfil(){
     ":id" => $id
     ]);
     $result = $maRequete->fetch();
+    return $result;
+};
+
+function afficherMonImageDeProfil(){
+    $result = fromTableProfil();
     $imageDeMonUser = $result["profil_picture"];
     echo "<img style='width: 10%;' src='$imageDeMonUser' alt='Image de profil'>".'<br>';
 };
 
 function afficherMaBanniere(){
-    require("../pdo/pdo.php");
-    $id = $_SESSION["id"];
-    $maRequete = $pdo->prepare("SELECT * from profil where id=:id");
-    $maRequete->execute([
-    ":id" => $id
-    ]);
-    $result = $maRequete->fetch();
+    $result = fromTableProfil();
     $banniereDeMonUser = $result["banner"];
-    
     echo "<img style='width: 10%;' src='$banniereDeMonUser' alt='Banniere de profil'>".'<br>';
 };
 
 function afficherMaBiographie(){
-    require("../pdo/pdo.php");
-    $id = $_SESSION["id"];
-    $maRequete = $pdo->prepare("SELECT * from profil where id=:id");
-    $maRequete->execute([
-    ":id" => $id
-    ]);
-    $result = $maRequete->fetch();
+    $result = fromTableProfil();
     $bioDeMonUser = $result["description"];
     echo "<h3>$bioDeMonUser</h3>".'<br>';
 };
 
 function afficherMonUsername(){
     echo $_SESSION["username"];
+};
+
+function fromTableUsers(){
+    require("../pdo/pdo.php");
+    $id = $_SESSION["id"];
+    $maRequete = $pdo->prepare("SELECT * from users where id=:id");
+    $maRequete->execute([
+    ":id" => $id
+    ]);
+    $result = $maRequete->fetch();
+    return $result;
+};
+
+
+function changerInfoPerso($userInfos){
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $lastname = filter_input(INPUT_POST,"lastname"); 
+        $name = filter_input(INPUT_POST,"name");
+        $country = filter_input(INPUT_POST,"country");
+        $birthday = filter_input(INPUT_POST,"birthday");
+        $phone = filter_input(INPUT_POST,"phone", FILTER_SANITIZE_NUMBER_INT); 
+        $username1 = filter_input(INPUT_POST, "username");
+        $password = filter_input(INPUT_POST, "password");
+        $mail = filter_input(INPUT_POST, "mail", FILTER_VALIDATE_EMAIL);
+        require("../pdo/pdo.php");
+        $id = $_SESSION["id"];
+        $changementEffectue = 0;
+
+        if($lastname){
+            $maRequete = $pdo->prepare("UPDATE users SET lastname=:lastname WHERE id=:id");
+            $maRequete->execute([
+                ":id" => $id,
+                ":lastname" => $lastname
+                ]);
+            $changementEffectue++;
+        };
+        if($name){
+            $maRequete = $pdo->prepare("UPDATE users SET name=:name WHERE id=:id");
+            $maRequete->execute([
+                ":id" => $id,
+                ":name" => $name
+                ]);
+        };
+        if($country && ($country != $userInfos["country"])){
+            $maRequete = $pdo->prepare("UPDATE users SET country=:country WHERE id=:id");
+            $maRequete->execute([
+                ":id" => $id,
+                ":country" => $country
+                ]);
+            $changementEffectue++; 
+            
+        };
+        if($birthday){
+            $maRequete = $pdo->prepare("UPDATE users SET birthday=:birthday WHERE id=:id");
+            $maRequete->execute([
+                ":id" => $id,
+                ":birthday" => $birthday
+                ]);
+            $changementEffectue++;
+
+        };
+        if($phone){
+            $maRequete = $pdo->prepare("UPDATE users SET phone=:phone WHERE id=:id");
+            $maRequete->execute([
+                ":id" => $id,
+                ":phone" => $phone
+                ]);
+            $changementEffectue++;
+
+        };
+        if($username1){
+            $maRequete = $pdo->prepare("UPDATE users SET username=:username WHERE id=:id");
+            $maRequete->execute([
+                ":id" => $id,
+                ":username" => $username1
+                ]);
+            $changementEffectue++;
+
+        };
+        if($password){
+            return;
+            $changementEffectue++;
+        };
+        if($mail){
+            $maRequete = $pdo->prepare("UPDATE users SET mail=:mail WHERE id=:id");
+            $maRequete->execute([
+                ":id" => $id,
+                ":mail" => $mail
+                ]);
+            $changementEffectue++;
+
+        };
+
+        if($changementEffectue > 0){
+            echo '<center>Les changements ont été effectués.</center>';
+            /* http_response_code(302);
+            header("location: personnalSetting.php");
+            exit(); */
+        };
+
+    }
 };
