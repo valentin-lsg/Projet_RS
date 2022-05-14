@@ -287,12 +287,15 @@ function changerInfoPerso($userInfos){
 
         };
         if($phone){
-            $maRequete = $pdo->prepare("UPDATE users SET phone=:phone WHERE id=:id");
-            $maRequete->execute([
-                ":id" => $id,
-                ":phone" => $phone
-                ]);
-            $changementEffectue++;
+            $verificationPhone = strlen((string)$phone);
+            if($verificationPhone == 10){
+                $maRequete = $pdo->prepare("UPDATE users SET phone=:phone WHERE id=:id");
+                $maRequete->execute([
+                    ":id" => $id,
+                    ":phone" => $phone
+                    ]);
+                $changementEffectue++;  
+            };
 
         };
         if($username1){
