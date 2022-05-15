@@ -8,7 +8,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $laNouvelleDescription = filter_input(INPUT_POST, "description");
     $changementEffectue = 0;
     if(isset($_FILES['profilPicture'])){
-        uploadMaPhoto();  
+        uploadMaPhoto('profilPicture' ,"profil");  
         $changementEffectue++;
     };
     

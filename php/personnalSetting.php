@@ -10,10 +10,6 @@ gererMonCompte();
 
 
 ?>
-
-<!-- Un gros formulaire avec toutes les données à changer -->
-<!-- Demander puis vérifier si le mot de passe concorde avant de changer ses infos -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +20,7 @@ gererMonCompte();
 </head>
 <body>
 
-    <!-- Afficher les infos de l'utilisateur depuis la base de donnée -->
+    
     <section>
         <h2>Mes informations</h2>
         <span>Votre nom de famille : <?= $userInfos["lastname"]; ?></span><br>
@@ -35,15 +31,15 @@ gererMonCompte();
         <span>Numéro de telephone : <?= $userInfos["phone"] ?></span><br>
         <span>Nom d'utilisateur : <?= $userInfos["username"] ?></span><br>
 
-        <!-- Créer des fonctions pour ceci -->
+        
         <form action="" method="post">
-            
             <button name="desactiverCompte" type="submit" style="color:orange">Desactiver votre compte</button><br>
             <button name="supprimerCompte" type="submit" style="color:red">Supprimer définitement votre compte</button>
         </form>
+
     </section>
 
-    <!-- Modifier les infos de l'utilisateur + confirmation avec mot de passe. -->
+ 
     <section>
         <h2>Changer mes informations</h2>
             <form action="" method="post">

@@ -1,5 +1,10 @@
 <?php 
 
+// Créer un fichier sur le serveur spécifique à l'utilisateur.
+function makeDir($path)
+{
+     return is_dir($path) || mkdir($path);
+}
 
 // Envoi les données de l'utilisateur dans la base de donnée
 function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthday, $phone, $username1, $password, $mail){
@@ -34,12 +39,20 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
             // REQUETE 3 : Création d'un profil temporaire.
             $maRequete = $pdo->prepare("INSERT INTO profil (banner, profil_picture, description, user_id) VALUES (:banner, :profil_picture, :description, :user_id);");
             $maRequete->execute([
-            ":banner" => "../upload/default_banner.png", 
-            ":profil_picture" => "../upload/default_pp.png", 
+            ":banner" => "../upload/default/default_banner.png", 
+            ":profil_picture" => "../upload/default/default_pp.png", 
             ":description" => "Ceci est la description de"." ".$username1, 
             ":user_id" => $idDeMonUser["id"]
             ]);
 
+            // Dernière étape : Lui créer des répertoires sur le serveur.
+
+            $newPath = "../upload/profil/".$username1;
+            makeDir($newPath);
+            $newPath = "../upload/profil/".$username1."/banner";
+            makeDir($newPath);
+            $newPath = "../upload/profil/".$username1."/profilPicture";
+            makeDir($newPath);
                    
 
             /* echo '<script>','alert("Vous avez été correctement inscrit en tant que '.$username1.' ")'.'</script>'; */
@@ -133,7 +146,7 @@ function gererMonCompte(){
             ":id" => $id
             ]);
             http_response_code(302);
-            header("location: login.php");
+            header("location: deconnexion.php");
             exit();
 
         } else if(isset($supprimerCompte)){
@@ -154,18 +167,25 @@ function gererMonCompte(){
 
 
 
-function uploadMaPhoto(){
+function uploadMaPhoto($nameOfTheInput, $destination){
     $error = 0;
-    if(isset($_FILES['profilPicture']) && $_FILES['profilPicture']['error'] == 0){
-        if($_FILES['profilPicture']['size'] <= 10000000){
-            $imageInfos = pathinfo($_FILES['profilPicture']['name']);
+    if(isset($_FILES[$nameOfTheInput]) && $_FILES[$nameOfTheInput]['error'] == 0){
+        if($_FILES[$nameOfTheInput]['size'] <= 10000000){
+            $imageInfos = pathinfo($_FILES[$nameOfTheInput]['name']);
             $extensionImage = $imageInfos['extension'];
-            $extensionAutorisee = array('png', 'jpeg', 'jpg', 'gif');
+            $extensionAutorisee = array('png', 'jpeg', 'jpg');
 
             if(in_array($extensionImage, $extensionAutorisee)){
                 $fileName = time().rand().'.'.$extensionImage;
-                $myFilePath = "../upload/profil/".$fileName;
-                move_uploaded_file($_FILES['profilPicture']['tmp_name'], $myFilePath);
+
+                if($destination == "profil"){
+                    $sessionUsername = $_SESSION["username"];
+                    $myFilePath = "../upload/profil/".$sessionUsername."/"."profilPicture/".$fileName;
+                } else if($destination == "post"){
+                    $myFilePath = "../upload/post/".$fileName;
+                }
+                
+                move_uploaded_file($_FILES[$nameOfTheInput]['tmp_name'], $myFilePath);
 
             }else {
                 $error = 1;
@@ -175,13 +195,12 @@ function uploadMaPhoto(){
             $error = 1;
         }
     }else{
-        $error = 2;
+        return;
     }
 
     if($error == 1){
         echo "Erreur, votre photo n'a pas été upload.";
-        $error = 0;
-    } else if($error == 0) {
+    } else if($error == 0 && $destination == "profil") {
         require("../pdo/pdo.php");
         $id = $_SESSION["id"];
         $profil_picture = $myFilePath;
@@ -193,22 +212,26 @@ function uploadMaPhoto(){
         /* http_response_code(302);
         header("location: dashboard.php");
         exit(); */
-    } else {
+    } else if($error == 0 && $destination == "post") {
         return;
-    }
+        /* Fonction créer un post puis insérer image dans le post */
+
+    };
 };
 
 function uploadMaBanniere(){
     $error = 0;
     if(isset($_FILES['banner']) && $_FILES['banner']['error'] == 0){
+
         if($_FILES['banner']['size'] <= 10000000){
             $imageInfos = pathinfo($_FILES['banner']['name']);
             $extensionImage = $imageInfos['extension'];
             $extensionAutorisee = array('png', 'jpeg', 'jpg', 'gif');
 
             if(in_array($extensionImage, $extensionAutorisee)){
+                $sessionUsername = $_SESSION["username"];
                 $fileName = time().rand().'.'.$extensionImage;
-                $myFilePath = "../upload/banner/".$fileName;
+                $myFilePath = "../upload/profil/".$sessionUsername."/"."banner/".$fileName;
                 move_uploaded_file($_FILES['banner']['tmp_name'], $myFilePath);
                 
             }else {
