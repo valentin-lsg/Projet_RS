@@ -2,7 +2,7 @@
 
 // Connexion à la base de donnée avec un PDO
 
-$db = new PDO("mysql:host=localhost;dbname=message;charset=utf8", "root", "", [
+$db = new PDO("mysql:host=localhost;dbname=no;charset=utf8", "root", "root", [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, 
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
 ]);
@@ -39,7 +39,7 @@ function getMessages(){
 
 // Analyse de l'envoie en POST pour les mettre dans la base de données
 
-function  postMessage(){
+function postMessage(){
 
     // variable déclaré ici sinon c'est comme si elle n'existe pas
     global $db;
