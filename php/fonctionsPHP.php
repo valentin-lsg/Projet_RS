@@ -200,6 +200,7 @@ function uploadMaPhoto($nameOfTheInput, $destination){
 
     if($error == 1){
         echo "Erreur, votre photo n'a pas été upload.";
+        return "Erreur, votre photo n'a pas été upload.";
     } else if($error == 0 && $destination == "profil") {
         require("../pdo/pdo.php");
         $id = $_SESSION["id"];
@@ -213,8 +214,7 @@ function uploadMaPhoto($nameOfTheInput, $destination){
         header("location: dashboard.php");
         exit(); */
     } else if($error == 0 && $destination == "post") {
-        return;
-        /* Fonction créer un post puis insérer image dans le post */
+        return $myFilePath;
 
     };
 };
@@ -451,3 +451,71 @@ function changePassword(){
     } 
     
 };
+
+function creerUnePublication($monCheminImage, $textePublication, $titrePublication){
+    require("../pdo/pdo.php");
+    $id = $_SESSION["id"];
+    $image = $monCheminImage;
+    $text = $textePublication;
+    $commentary = "";
+    $title = $titrePublication;
+
+    $maRequete = $pdo->prepare("INSERT INTO post (user_id, title, text, image, commentary) VALUES (:user_id, :title, :text, :image, :commentary)");
+    $maRequete->execute([
+    ":text" => $text,
+    ":user_id" => $id,
+    ":title" => $title,
+    ":image" => $image,
+    ":commentary" => $commentary
+    ]);
+        
+}
+
+function fromTablePost(){
+    require("../pdo/pdo.php");
+    $id = $_SESSION["id"];
+    $maRequete = $pdo->prepare("SELECT * FROM post where user_id=:user_id");
+    $maRequete->execute([
+    ":user_id" => $id
+    ]);
+    $result = $maRequete->fetchall(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function afficherMesPublications(){
+    $mesPosts = fromTablePost();
+    
+    foreach($mesPosts as $valueMesPosts){
+        $idDuPost = $valueMesPosts["id"];
+        echo '<h2>'.$valueMesPosts["title"].'</h2>
+                <img src="'.$valueMesPosts["image"].'" width="50%" height="50%" alt="image">
+                <div class="maPublication">'.$valueMesPosts["text"].'</div>
+                <button type="submit" name="'.$idDuPost.'">Supprimer</button>';
+    }
+    /* supprimerPublication($idDuPost); */
+    
+};
+
+/* function supprimerPublication($idDuPost){
+    $myTarget = filter_input(INPUT_POST, "$idDuPost");
+    $isDone = false;
+    
+
+    if(isset($myTarget)){
+        echo 'jsuis la';
+        require("../pdo/pdo.php");
+        $maRequete = $pdo->prepare("DELETE * FROM post where id=:publicationId");
+        $maRequete->execute([
+        ":$idDuPost" => $idDuPost
+        ]);
+        $isDone = True;
+
+    };
+
+    if($isDone){
+        http_response_code(302);
+        header("location: dashboard.php");
+        exit();
+    }
+    
+}; */

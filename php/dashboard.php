@@ -5,6 +5,24 @@ include("fonctionsPHP.php");
 
 checkLogin();
 
+/* Création d'une publication */
+$boutonEnvoiMonPost = filter_input(INPUT_POST, "boutonEnvoiMonPost");
+$titrePublication = filter_input(INPUT_POST, "titrePublication");
+$textePublication = filter_input(INPUT_POST, "textePublication");
+
+if(isset($boutonEnvoiMonPost)){
+    $monCheminImage = uploadMaPhoto("imagePublication", "post");
+    if($monCheminImage != "Erreur, votre photo n'a pas été upload."){
+        if($titrePublication && $textePublication){
+            creerUnePublication($monCheminImage, $textePublication, $titrePublication); 
+        }
+        
+    };
+    
+};
+
+
+
 
 
 ?> 
@@ -18,81 +36,106 @@ checkLogin();
     <title>Document</title>
 </head>
 <body>
+    <style>
+        * {
+            box-sizing: border-box;
+            }
 
+            /* Create two equal columns that floats next to each other */
+        .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+        }
 
-    <!-- Afficher mon username -->
-    <p>Votre username :</p>
-    <?php 
-    afficherMonUsername();
-    ?>
-    <br>
+        /* Clear floats after the columns */
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+    </style>
 
-    <!-- Afficher son image de profil -->
-    <p>Votre image de profil actuel est :</p>
-    <?php 
-    afficherMonImageDeProfil();
-    ?>
+    <style>
+    .maPublication {
+    width: 320px;
+    padding: 10px;
+    border: 5px solid gray;
+    margin: 0;
+    }
+    </style>
 
-    <!-- Afficher ma bannière -->
-    <br>
-    <p>Votre image de banniere actuel est :</p>
-    <?php 
-    afficherMaBanniere();
-    ?>
+    <div class="row">
+        <div class="column">
+            <!-- Afficher mon username -->
+            <p>Votre username :</p>
+            <?php 
+            afficherMonUsername();
+            ?>
+            <br>
 
-    <!-- Afficher ma description -->
-    <br>
-    <p>Votre biographie est :</p>
-    <?php 
-    afficherMaBiographie();
-    ?>
+            <!-- Afficher son image de profil -->
+            <p>Votre image de profil actuel est :</p>
+            <?php 
+            afficherMonImageDeProfil();
+            ?>
 
-    <h2>Mes publications :</h2>
-    <h3>Créer une publication</h3>
+            <!-- Afficher ma bannière -->
+            <br>
+            <p>Votre image de banniere actuel est :</p>
+            <?php 
+            afficherMaBanniere();
+            ?>
 
-    <?php
-        $boutonEnvoiMonPost = filter_input(INPUT_POST, "boutonEnvoiMonPost");
-        $textePublication = filter_input(INPUT_POST, "textePublication");
-        
-    
-        if(isset($boutonEnvoiMonPost)){
-            if($textePublication){
-                echo $textePublication;
-            };
+            <!-- Afficher ma description -->
+            <br>
+            <p>Votre biographie est :</p>
+            <?php 
+            afficherMaBiographie();
+            ?>
 
-            uploadMaPhoto("imagePublication", "post");
+            <h2>Mes publications :</h2>
+            <h3>Créer une publication</h3>
+
+            <form action="" method="post" enctype="multipart/form-data">
+
+                <label for="titrePublication">Titre de ma publication :</label><br>
+                <input type="text" name="titrePublication">
+                <br>
+
+                <label for="textePublication">Texte de ma publication :</label><br>
+                <textarea style="resize:none" name="textePublication"  cols="30" rows="10"></textarea>
+                <br>
+
+                <label for="imagePublication">Joindre une image</label>
+                <input name="imagePublication" type="file">
+                <br>
+
+                <button name="boutonEnvoiMonPost" type="submit">Envoyer</button>
+                <br>
+
+            </form>
+
+            <!-- Ajouter sa photo de profil -->
+            <a href="profilSetting.php">Editer mon profil</a><br>
+            <a href="personnalSetting.php">Editer vos infos persos</a><br>  
+            <a href="deconnexion.php">Se deconnecter</a>
+        </div>
+        <!-- Contenu :
+            ETAPE 1 : Créer une publication apparaissant sur son profil
+            ETAPE 2 : Commenter une publication ou un autre commentaire (un niveau maximum)
+            ETAPE 3 : Réagir à une publication ou un commentaire avec un émoji -->
+            <!-- maPublication -->
+
+        <div class="column">
             
-        };
-    ?>
-
-    <form action="" method="post" enctype="multipart/form-data">
-
-        <label for="textePublication">Texte de ma publication :</label><br>
-        <textarea style="resize:none" name="textePublication"  cols="30" rows="10"></textarea>
-        <br>
-
-        <label for="imagePublication">Joindre une image</label>
-        <input name="imagePublication" type="file" name="">
-        <br>
-
-        <button name="boutonEnvoiMonPost" type="submit">Envoyer</button>
-        <br>
-
-    </form>
-    <!-- Contenu :
-
-    ETAPE 1 : Créer une publication apparaissant sur son profil
-    ETAPE 2 : Commenter une publication ou un autre commentaire (un niveau maximum)
-    ETAPE 3 : Réagir à une publication ou un commentaire avec un émoji
-
-    -->
+        <?php 
+            afficherMesPublications();
+        ?>
 
 
-
-
-    <!-- Ajouter sa photo de profil -->
-    <a href="profilSetting.php">Editer mon profil</a><br>
-    <a href="personnalSetting.php">Editer vos infos persos</a><br>  
-    <a href="deconnexion.php">Se deconnecter</a>
+        </div>
+    </div>
 </body>
 </html>
