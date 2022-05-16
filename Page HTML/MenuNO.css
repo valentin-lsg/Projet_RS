@@ -1,7 +1,7 @@
 .messages{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     background-color: #aec6cf;
     border: 20px solid #aec6cf;
     border-radius: 10px;
