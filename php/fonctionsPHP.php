@@ -6,6 +6,18 @@ function makeDir($path)
      return is_dir($path) || mkdir($path);
 }
 
+// Verifier cohérence de date
+function verifDate($birthday){
+    $verifDateLimit = explode("-", $birthday);
+    echo $verifDateLimit[0];
+    if($verifDateLimit[0] >= 2020){
+        return false;
+    }else{
+        return true;
+    }
+
+}
+
 // Envoi les données de l'utilisateur dans la base de donnée
 function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthday, $phone, $username1, $password, $mail){
     if(isset($register)) {
@@ -276,9 +288,11 @@ function changeDescriptionUser($laNouvelleDescription){
     ]);
 };
 
-function fromTableProfil(){
+function fromTableProfil($id){
     require("../pdo/pdo.php");
-    $id = $_SESSION["id"];
+    if(!$id){
+       $id = $_SESSION["id"]; 
+    }
     $maRequete = $pdo->prepare("SELECT * from profil where id=:id");
     $maRequete->execute([
     ":id" => $id
@@ -287,26 +301,30 @@ function fromTableProfil(){
     return $result;
 };
 
-function afficherMonImageDeProfil(){
-    $result = fromTableProfil();
+function afficherMonImageDeProfil($id){
+    $result = fromTableProfil($id);
     $imageDeMonUser = $result["profil_picture"];
     echo "<img style='width: 10%;' src='$imageDeMonUser' alt='Image de profil'>".'<br>';
 };
 
-function afficherMaBanniere(){
-    $result = fromTableProfil();
+function afficherMaBanniere($id){
+    $result = fromTableProfil($id);
     $banniereDeMonUser = $result["banner"];
     echo "<img style='width: 10%;' src='$banniereDeMonUser' alt='Banniere de profil'>".'<br>';
 };
 
-function afficherMaBiographie(){
-    $result = fromTableProfil();
+function afficherMaBiographie($id){
+    $result = fromTableProfil($id);
     $bioDeMonUser = $result["description"];
     echo "<h3>$bioDeMonUser</h3>".'<br>';
 };
 
-function afficherMonUsername(){
-    echo $_SESSION["username"];
+function afficherMonUsername($username){
+    if(!$username){
+        echo $_SESSION["username"];
+    }
+    echo $username;
+    
 };
 
 function fromTableUsers(){
@@ -362,12 +380,15 @@ function changerInfoPerso($userInfos){
             
         };
         if($birthday){
-            $maRequete = $pdo->prepare("UPDATE users SET birthday=:birthday WHERE id=:id");
-            $maRequete->execute([
-                ":id" => $id,
-                ":birthday" => $birthday
-                ]);
-            $changementEffectue++;
+            if(verifDate($birthday)){
+                $maRequete = $pdo->prepare("UPDATE users SET birthday=:birthday WHERE id=:id");
+                $maRequete->execute([
+                    ":id" => $id,
+                    ":birthday" => $birthday
+                    ]);
+                $changementEffectue++;
+            };
+            
 
         };
         if($phone){
@@ -472,9 +493,12 @@ function creerUnePublication($monCheminImage, $textePublication, $titrePublicati
         
 }
 
-function fromTablePost(){
+function fromTablePost($id){
     require("../pdo/pdo.php");
-    $id = $_SESSION["id"];
+    if(!$id){
+       $id = $_SESSION["id"]; 
+    }
+    
     $maRequete = $pdo->prepare("SELECT * FROM post where user_id=:user_id ORDER BY id DESC");
     $maRequete->execute([
     ":user_id" => $id
@@ -483,15 +507,21 @@ function fromTablePost(){
     return $result;
 }
 
-function afficherMesPublications(){
-    $mesPosts = fromTablePost();
+function afficherMesPublications($id){
+    if(!$id){
+        $mesPosts = fromTablePost("");
+    }else{
+        $mesPosts = fromTablePost($id);
+    }
+    
     
     foreach($mesPosts as $valueMesPosts){
         
-        $monImage = '<img src="'.$valueMesPosts["image"].'" width="50%" height="50%" alt="image">';
+        $monImage = '<img src="'.$valueMesPosts["image"].'" width="150px"  alt="image">';
         $maBaliseExiste = ($valueMesPosts["image"] != NULL) ? $monImage : "";
 
-        echo '<h2>'.$valueMesPosts["title"].'</h2>'.
+        if(!$id){
+            echo '<h2>'.$valueMesPosts["title"].'</h2>'.
             $maBaliseExiste.'
                 <div class="maPublication">'.$valueMesPosts["text"].'</div>
                 <a href="voirCommentaire.php?id='.$valueMesPosts["id"].'">
@@ -500,6 +530,15 @@ function afficherMesPublications(){
                 <a href="deletePoste.php?id='.$valueMesPosts["id"].'">
                             Supprimer
                         </a>';
+        }else{
+            echo '<h2>'.$valueMesPosts["title"].'</h2>'.
+            $maBaliseExiste.'
+                <div class="maPublication">'.$valueMesPosts["text"].'</div>
+                <a href="voirCommentaire.php?id='.$valueMesPosts["id"].'">
+                        Voir les commentaires
+                    </a>';
+        }
+        
              
     }
     

@@ -1,7 +1,7 @@
 <?php 
 
 $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-
+include("fonctionsPHP.php");
 require("../pdo/pdo.php");;
 
 $maRequete = $pdo->prepare("SELECT * FROM profil WHERE user_id = :id");
@@ -12,11 +12,17 @@ $maRequete->execute([
 // Etape 3 : Je récupère LE résultat
 $pageProfilDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
 
-$maRequete = $pdo->prepare("SELECT * FROM users WHERE user_id = :id");
+$maRequete = $pdo->prepare("SELECT * FROM users WHERE id = :id");
 $maRequete->execute([
     ":id" => $id
 ]);
 $infoDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
+
+$maRequete = $pdo->prepare("SELECT * FROM post WHERE user_id = :id");
+$maRequete->execute([
+    ":id" => $id
+]);
+$postDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -29,7 +35,7 @@ $infoDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
     <title>Page de <?= $infoDeMonAmi["username"]; ?></title>
 </head>
 <body>
-    <?= $pageProfilDeMonAmi["user_id"] ?>;
+
     <style>
         * {
             box-sizing: border-box;
@@ -65,45 +71,40 @@ $infoDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
             <!-- Afficher mon username -->
             <p>Votre username :</p>
             <?php 
-            afficherMonUsername();
+            afficherMonUsername($infoDeMonAmi["username"]);
             ?>
             <br>
 
             <!-- Afficher son image de profil -->
             <p>Votre image de profil actuel est :</p>
             <?php 
-            afficherMonImageDeProfil();
+            afficherMonImageDeProfil($infoDeMonAmi["id"]);
             ?>
 
             <!-- Afficher ma bannière -->
             <br>
             <p>Votre image de banniere actuel est :</p>
             <?php 
-            afficherMaBanniere();
+            afficherMaBanniere($infoDeMonAmi["id"]);
             ?>
 
             <!-- Afficher ma description -->
             <br>
             <p>Votre biographie est :</p>
             <?php 
-            afficherMaBiographie();
+            afficherMaBiographie($infoDeMonAmi["id"]);
             ?>
 
 
         </div>
-        <!-- Contenu :
-            ETAPE 1 : Créer une publication apparaissant sur son profil
-            ETAPE 2 : Commenter une publication ou un autre commentaire (un niveau maximum)
-            ETAPE 3 : Réagir à une publication ou un commentaire avec un émoji -->
-            <!-- maPublication -->
+        
 
         <div class="column">
-            
         <?php 
-            afficherMesPublications();
+        
+            afficherMesPublications($infoDeMonAmi["id"]);
             
         ?>
-
         <br>
         <form method="GET">
         <input type="search" name="research" placeholder="Rechercher un membre">

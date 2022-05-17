@@ -18,11 +18,14 @@ include("fonctionsPHP.php");
 // Verifier la date pour qu'elle ne soit pas bizarre
 
 if(isset($register)){
-    if($lastname != NULL && $name != NULL && $country != NULL && $birthday != NULL && $phone != NULL && $username1 != NULL && $password != NULL && $mail != NULL){
-        envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthday, $phone, $username1, $password, $mail);
-    }else{
-        echo '<script>','alert("Saisie incorrecte ! Il faut remplir tout les champs.")'.'</script>';
+    if(verifDate($birthday)){
+        if($lastname != NULL && $name != NULL && $country != NULL && $birthday != NULL && $phone != NULL && $username1 != NULL && $password != NULL && $mail != NULL){
+            envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthday, $phone, $username1, $password, $mail);
+        }else{
+            echo '<script>','alert("Saisie incorrecte ! Il faut remplir tout les champs.")'.'</script>';
+        }
     }
+    
 }
 
 

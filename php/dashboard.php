@@ -77,28 +77,28 @@ if(isset($_GET['research']) AND !empty($_GET['research'])){
             <!-- Afficher mon username -->
             <p>Votre username :</p>
             <?php 
-            afficherMonUsername();
+            afficherMonUsername("");
             ?>
             <br>
 
             <!-- Afficher son image de profil -->
             <p>Votre image de profil actuel est :</p>
             <?php 
-            afficherMonImageDeProfil();
+            afficherMonImageDeProfil("");
             ?>
 
             <!-- Afficher ma bannière -->
             <br>
             <p>Votre image de banniere actuel est :</p>
             <?php 
-            afficherMaBanniere();
+            afficherMaBanniere("");
             ?>
 
             <!-- Afficher ma description -->
             <br>
             <p>Votre biographie est :</p>
             <?php 
-            afficherMaBiographie();
+            afficherMaBiographie("");
             ?>
 
             <h2>Mes publications :</h2>
@@ -137,7 +137,7 @@ if(isset($_GET['research']) AND !empty($_GET['research'])){
         <div class="column">
             
         <?php 
-            afficherMesPublications();
+            afficherMesPublications("");
             
         ?>
 
