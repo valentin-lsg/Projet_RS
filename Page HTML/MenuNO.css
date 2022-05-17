@@ -11,6 +11,12 @@
     padding : 1em;
 }
 
+.message{
+    background-color: #D8E4E8;
+    border: 20px solid #D8E4E8;
+    border-radius: 10px;
+}
+
 .userInput{
     display: flex;
     flex-direction: column;
