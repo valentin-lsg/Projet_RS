@@ -91,8 +91,8 @@ function seConnecter($login, $username1, $candidate_password){
     if(password_verify($candidate_password, $row["password"])){
         $_SESSION["username"]=$username1;
         $_SESSION["id"]=$row["id"];
-        http_response_code(302);
-        header("location: dashboard.php");
+        http_response_code("302");
+        header('Location: dashboard.php');
         exit();
     } else {
         echo '<script>','alert("Vos informations de connexion sont incorrectes.")'.'</script>';
@@ -494,6 +494,9 @@ function afficherMesPublications(){
         echo '<h2>'.$valueMesPosts["title"].'</h2>'.
             $maBaliseExiste.'
                 <div class="maPublication">'.$valueMesPosts["text"].'</div>
+                <a href="voirCommentaire.php?id='.$valueMesPosts["id"].'">
+                        Voir les commentaires
+                    </a>
                 <a href="deletePoste.php?id='.$valueMesPosts["id"].'">
                             Supprimer
                         </a>';
