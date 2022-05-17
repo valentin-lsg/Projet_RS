@@ -1,11 +1,37 @@
 <?php
-$bdd = new PDO('mysql:host=localhost;dbname=no;','root', 'root');
+/* $bdd = new PDO('mysql:host=localhost;dbname=no;','root', 'root');
 $allusers = $bdd->query('SELECT * FROM users ORDER BY id DESC');
 if (isset($_GET['s']) AND !empty($_GET['s'])){
     $recherche = htmlspecialchars($_GET['s']);
-    $allusers = $bdd->query('SELECT username FROM users WHERE username LIKE "%'.$recherche.'%" ORDER BY id DESC');
+    $allusers = $bdd->query('SELECT * FROM users WHERE username=:username');
+    $alluser = execute([
+        ":username" => $username
+    ])
 
+} */
+
+
+$test = filter_input(INPUT_POST, "envoyer");
+
+function rechercherUser(){
+    if(isset($test)){
+        require("../pdo/pdo.php");
+        $username = "admin";
+    
+        $maRequete = $pdo->prepare("SELECT * FROM users WHERE username=:username");
+        $maRequete->execute([
+        ":username" => $username
+        ]);
+        $result = $maRequete->fetch();
+        if($result->rowCount() > 0){
+            echo  '<p>$user['.$valueInResult["username"].'</p>';
+        }else{
+            echo "<p>Pas d'utilisateur</p>";
+        }
+    }
 }
+
+
 ?>
 
 
@@ -16,24 +42,14 @@ if (isset($_GET['s']) AND !empty($_GET['s'])){
     <meta charset="UTF-8">
 </head>
 <body>
-    <form method ="GET">
+    <form method ="POST">
         <input type="search" name="s" placeholder="recherche un utilisateur" autocomplete = "off">
-        <input type="submit" value = "envoyer">
+        <button type="submit" name="envoyer">Envoyer</button>
+        
     </form>
     <section class = "afficher_utilisateur">
         <?php
-            if($allusers->rowCount() > 0){
-                while($user = $allusers->fetch()){
-                    ?>
-                    <p><?= $user['username']; ?></p>
-                    <?php
-                }
-            }else{
-                ?>
-                <p>pas d'utilisateur</p>
-                <?php
-
-            }
+rechercherUser()
 
         ?>
          
