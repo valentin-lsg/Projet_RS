@@ -51,7 +51,7 @@
         </div>
       </div>
     </nav>
-    
+
     <section class="chat">
       <div class="messages">
         <div class="message">
@@ -74,8 +74,9 @@
       </div>
       <div class="userInput">
         <form action="messageNO.php?task=write" method="POST">
-          <input type="text" name="author" id="author" placeholder="Nom">
+          <input type="text" id="author" name="author"  placeholder="Nom">
           <input type="text" id="content" name="content" placeholder="Votre message">
+          <input type="text" id="who_receive" name="who_receive" placeholder="Envoyé à">
           <button type="submit">Envoyé</button>
         </form>
       </div>

@@ -51,12 +51,14 @@ function postMessage(){
     
     $author = $_POST["author"];
     $content = $_POST["content"];
+    $who_receive = $_POST["who_receive"];
 
     // Requête pour insérer les données
-    $query = $db->prepare("INSERT INTO messages SET author = :author, content = :content, created_at = NOW()");
+    $query = $db->prepare("INSERT INTO messages SET author = :author, who_receive = :who_receive, content = :content, created_at = NOW()");
     $query->execute([
         "author" => $author,
-        "content" => $content
+        "content" => $content,
+        "who_receive" => $who_receive
     ]);
     echo json_encode(["status" => "succès"]);
 }
