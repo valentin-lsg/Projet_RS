@@ -22,6 +22,13 @@ if(isset($boutonEnvoiMonPost)){
 };
 
 
+if(isset($_GET['research']) AND !empty($_GET['research'])){
+    $bdd = new PDO('mysql:host=localhost; dbname=no;','root','root');
+    $allmembers = $bdd->prepare('SELECT * FROM users ORDER BY id DESC');
+    $search = htmlspecialchars($_GET['research']);
+    $allmembers = $bdd->query('SELECT * FROM users WHERE username LIKE "' .$search.'%" ORDER BY id DESC');
+}
+
 
 
 ?> 
@@ -133,6 +140,25 @@ if(isset($boutonEnvoiMonPost)){
             afficherMesPublications();
             
         ?>
+
+        <br>
+        <form method="GET">
+        <input type="search" name="research" placeholder="Rechercher un membre">
+        <input type="submit" value="recherche">
+    </form>
+
+    <section class="afficher_membres">
+        <?php
+            if($allmembers->rowCount() > 0){
+                foreach($allmembers as $valueInAllMembers){
+                    
+                    echo '<a href="friendDashboard.php?id='.$valueInAllMembers['id'].'">'.$valueInAllMembers['username'].'</a>'.
+                    '<button>Ajouter</button>'.'<br>';
+                    
+                    }  
+            }
+            ?>
+    </section>
         
 
         </div>
