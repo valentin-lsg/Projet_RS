@@ -2,6 +2,20 @@
 CREATE DATABASE IF NOT EXISTS `NO` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `NO`;
 
+CREATE TABLE `commentary` (
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `post_id` int(10) unsigned NOT NULL,
+    `user_id` int(10) unsigned NOT NULL,
+    `text` text not null,
+    `reaction` ENUM("0", "1") not null,
+    PRIMARY KEY (`id`),
+    KEY `post_id_foreign` (`post_id`),
+    KEY `user_id_foreign` (`user_id`),
+    CONSTRAINT `post_id_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `user_id_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE `users`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `lastname` VARCHAR(255) NOT NULL,
