@@ -24,7 +24,6 @@ if(isset($boutonEnvoiMonPost)){
 
 
 
-
 ?> 
 
 <!DOCTYPE html>
@@ -132,8 +131,9 @@ if(isset($boutonEnvoiMonPost)){
             
         <?php 
             afficherMesPublications();
+            
         ?>
-
+        
 
         </div>
     </div>

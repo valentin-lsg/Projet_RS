@@ -459,6 +459,7 @@ function creerUnePublication($monCheminImage, $textePublication, $titrePublicati
     $text = $textePublication;
     $commentary = "";
     $title = $titrePublication;
+    
 
     $maRequete = $pdo->prepare("INSERT INTO post (user_id, title, text, image, commentary) VALUES (:user_id, :title, :text, :image, :commentary)");
     $maRequete->execute([
@@ -474,7 +475,7 @@ function creerUnePublication($monCheminImage, $textePublication, $titrePublicati
 function fromTablePost(){
     require("../pdo/pdo.php");
     $id = $_SESSION["id"];
-    $maRequete = $pdo->prepare("SELECT * FROM post where user_id=:user_id");
+    $maRequete = $pdo->prepare("SELECT * FROM post where user_id=:user_id ORDER BY id DESC");
     $maRequete->execute([
     ":user_id" => $id
     ]);
@@ -486,36 +487,31 @@ function afficherMesPublications(){
     $mesPosts = fromTablePost();
     
     foreach($mesPosts as $valueMesPosts){
-        $idDuPost = $valueMesPosts["id"];
-        echo '<h2>'.$valueMesPosts["title"].'</h2>
-                <img src="'.$valueMesPosts["image"].'" width="50%" height="50%" alt="image">
+        
+        $monImage = '<img src="'.$valueMesPosts["image"].'" width="50%" height="50%" alt="image">';
+        $maBaliseExiste = ($valueMesPosts["image"] != NULL) ? $monImage : "";
+
+        echo '<h2>'.$valueMesPosts["title"].'</h2>'.
+            $maBaliseExiste.'
                 <div class="maPublication">'.$valueMesPosts["text"].'</div>
-                <button type="submit" name="'.$idDuPost.'">Supprimer</button>';
+                <a href="deletePoste.php?id='.$valueMesPosts["id"].'">
+                            Supprimer
+                        </a>';
+             
     }
-    /* supprimerPublication($idDuPost); */
     
 };
 
-/* function supprimerPublication($idDuPost){
-    $myTarget = filter_input(INPUT_POST, "$idDuPost");
-    $isDone = false;
+
+
+function supprimerPublication($idDuPost){  
+    require("../pdo/pdo.php");
+    $maRequete = $pdo->prepare("DELETE FROM post where id = :publicationId");
+    $maRequete->execute([
+    ":publicationId" => $idDuPost
+    ]);
+
     
-
-    if(isset($myTarget)){
-        echo 'jsuis la';
-        require("../pdo/pdo.php");
-        $maRequete = $pdo->prepare("DELETE * FROM post where id=:publicationId");
-        $maRequete->execute([
-        ":$idDuPost" => $idDuPost
-        ]);
-        $isDone = True;
-
-    };
-
-    if($isDone){
-        http_response_code(302);
-        header("location: dashboard.php");
-        exit();
-    }
     
-}; */
+};
+

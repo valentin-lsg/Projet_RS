@@ -33,8 +33,8 @@ gererMonCompte();
 
         
         <form action="" method="post">
-            <button name="desactiverCompte" type="submit" style="color:orange">Desactiver votre compte</button><br>
-            <button name="supprimerCompte" type="submit" style="color:red">Supprimer définitement votre compte</button>
+            <button name="desactiverCompte" type="submit" style="color:orange">Désactiver votre compte</button><br>
+            <button name="supprimerCompte" type="submit" style="color:red">Supprimer définitivement votre compte</button>
         </form>
 
     </section>
