@@ -29,6 +29,15 @@ if(isset($_GET['research']) AND !empty($_GET['research'])){
     $allmembers = $bdd->query('SELECT * FROM users WHERE username LIKE "' .$search.'%" ORDER BY id DESC');
 }
 
+if(isset($_POST['Ajouter'])){
+    require('../pdo/pdo.php');
+    $ajouteAmi = $pdo->prepare('INSERT INTO friendlist (friend_id,friend_username,user_id) VALUES (:friend_id, :friend_username, :user_id)');
+    $ajouteAmi->execute([
+        ":friend_id" => 0,
+        ":friend_username" => "bsdbs",
+        ":user_id" => 1
+    ]);
+}
 
 
 ?> 
@@ -153,7 +162,10 @@ if(isset($_GET['research']) AND !empty($_GET['research'])){
                 foreach($allmembers as $valueInAllMembers){
                     
                     echo '<a href="friendDashboard.php?id='.$valueInAllMembers['id'].'">'.$valueInAllMembers['username'].'</a>'.
-                    '<button>Ajouter</button>'.'<br>';
+                    '<form method="POST" action="dashboard.php">'.
+                    '<input type="hidden" name="id" value="' . $valueInAllMembers['id'] . '" />'.
+                    '<input type="submit" name="Ajouter" value="Ajouter">'.
+                    '</form>';
                     
                     }  
             }
