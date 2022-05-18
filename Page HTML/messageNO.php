@@ -45,19 +45,19 @@ function postMessage(){
     global $db;
 
     // Analyse des paramètres en POST
-    if(!array_key_exists("author", $_POST) || !array_key_exists("content", $_POST)){
+    if(!array_key_exists("who_send", $_POST) || !array_key_exists("send", $_POST)){
         echo json_encode(["status" => "erreur", "message" => "Aucun contenu envoyé"]);
     }
     
-    $author = $_POST["author"];
-    $content = $_POST["content"];
+    $who_send = $_POST["who_send"];
+    $send = $_POST["send"];
     $who_receive = $_POST["who_receive"];
 
     // Requête pour insérer les données
-    $query = $db->prepare("INSERT INTO messages SET author = :author, who_receive = :who_receive, content = :content, created_at = NOW()");
+    $query = $db->prepare("INSERT INTO messages SET who_send = :who_send, who_receive = :who_receive, send = :send, created_at = NOW()");
     $query->execute([
-        "author" => $author,
-        "content" => $content,
+        "who_send" => $who_send,
+        "send" => $send,
         "who_receive" => $who_receive
     ]);
     echo json_encode(["status" => "succès"]);

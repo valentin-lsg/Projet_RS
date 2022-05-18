@@ -10,7 +10,7 @@ function getMessages(){
 
         // .reverse pour avoir les nouveaux messages en bas
         const html = resultat.reverse().map(function(message){
-            return `<div class="message"><span class="date">${message.created_at.substring(11, 16)}</span> <span class="author">${message.author}</span></br><span class="content">${message.content}</span></div>`
+            return `<div class="message"><span class="date">${message.created_at.substring(11, 16)}</span> <span class="who_send">${message.who_send}</span></br><span class="send">${message.send}</span></div>`
         }).join("");
 
         const messages = document.querySelector(".messages");
@@ -27,14 +27,14 @@ function postMessage(event){
     event.preventDefault();
 
     // Récupérer les données du formulaires
-    const author = document.querySelector("#author");
-    const content = document.querySelector("#content");
+    const who_send = document.querySelector("#who_send");
+    const send = document.querySelector("#send");
     const who_receive = document.querySelector("#who_receive");
 
     // Conditionner les données
     const data = new FormData();
-    data.append("author", author.value);
-    data.append("content", content.value);
+    data.append("who_send", who_send.value);
+    data.append("send", send.value);
     data.append("who_receive", who_receive.value);
 
     // Confirmer la requête AJAX POST puis envoyer les données
@@ -42,8 +42,8 @@ function postMessage(event){
     requeteAjax.open("POST", "messageNO.php?task=write");
 
     requeteAjax.onload = function(){
-        content.value = ""; //contenue du message vidé
-        content.focus(); //pouvoir écrire directement dans message
+        send.value = ""; //contenue du message vidé
+        send.focus(); //pouvoir écrire directement dans message
         getMessages();
     }
     requeteAjax.send(data);
