@@ -8,6 +8,7 @@ if($idDuPost){
     $marequete = $pdo->prepare("SELECT * FROM commentary");
     $marequete->execute();
     $commentaire = $marequete->fetchAll(PDO::FETCH_ASSOC);
+    
     $idDeCeluiQuiACommente = $commentaire["user_id"];
     $marequete = $pdo->prepare("SELECT * FROM users where id=:id");
     $marequete->execute([
@@ -51,7 +52,7 @@ td, th {
             <tr>
                 <th>Nom de la personne</th>
                 <th>Texte</th>
-                <th>Reaction</th>
+                <!-- <th>Reaction</th> -->
             </tr>
         </thead>
         <tbody>
@@ -59,7 +60,7 @@ td, th {
                 <tr>
                     <td><?= $nomUtilisateur["username"] ?></td>
                     <td><?= $valueInCommentaire["text"] ?></td>
-                    <td><?= $valueInCommentaire["reaction"] ?></td>
+                    <!-- <td>  /* $valueInCommentaire["reaction"] */ </td> -->
                 </tr>
             <?php endforeach; ?>
         </tbody>

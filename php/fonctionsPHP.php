@@ -534,22 +534,42 @@ function afficherMesPublications($id){
             echo '<h2>'.$valueMesPosts["title"].'</h2>'.
             $maBaliseExiste.'
                 <div class="maPublication">'.$valueMesPosts["text"].'</div>
-                <label for="commentaire">Votre Commentaire :</label><input name="commentaire" type="text"><br>
+                <form method="post">
+                <label for="commentaire">Votre Commentaire :</label>
+                <input name="commentaire" type="text">
+                <input type="hidden" name="idDeCePost" value="'.$valueMesPosts["id"].'">
+                <button type="submit" name="sendCommentaire">Envoyer</button></form>
+                <br>
                 <a href="voirCommentaire.php?id='.$valueMesPosts["id"].'">
                         Voir les commentaires
                     </a>';
         }
         
-             
+         
     }
     
 };
 
-function commenterUnePublication($idDuPost, $userId){
-    $ajouterCeCommentaire = filter_input(INPUT_POST, "commentaire");
-    if($ajouterCeCommentaire){
+function commenterUnePublication($idVisiteur){
+    $sendCommentaire = filter_input(INPUT_POST, "sendCommentaire");
+
+    if(isset($sendCommentaire)){
+        $text = filter_input(INPUT_POST, "commentaire");
+        $idDuPost = filter_input(INPUT_POST, "idDeCePost");
+        if($text != NULL){
+            require("../pdo/pdo.php");
+            $maRequete = $pdo->prepare("INSERT INTO commentary (post_id, user_id, text) VALUES (:post_id, :user_id, :text)");
+            $maRequete->execute([
+            "post_id" => $idDuPost,
+            "user_id" => $idVisiteur,
+            ":text" => $text
+            ]);
+        }
         
     }
+    
+    
+    
 
 };
 

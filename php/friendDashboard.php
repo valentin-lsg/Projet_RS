@@ -1,27 +1,33 @@
 <?php 
+session_start();
 
-$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+$idAmi = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+$idDuVisiteur = $_SESSION["id"];
 include("fonctionsPHP.php");
 require("../pdo/pdo.php");;
 
 
 $maRequete = $pdo->prepare("SELECT * FROM profil WHERE user_id = :id");
 $maRequete->execute([
-    ":id" => $id
+    ":id" => $idAmi
 ]);
 $pageProfilDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
 
 $maRequete = $pdo->prepare("SELECT * FROM users WHERE id = :id");
 $maRequete->execute([
-    ":id" => $id
+    ":id" => $idAmi
 ]);
 $infoDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
 
 $maRequete = $pdo->prepare("SELECT * FROM post WHERE user_id = :id");
 $maRequete->execute([
-    ":id" => $id
+    ":id" => $idAmi
 ]);
 $postDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
+
+
+
+commenterUnePublication($idDuVisiteur);
 
 ?>
 
@@ -71,6 +77,7 @@ $postDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
             <p>Votre username :</p>
             <?php 
             afficherMonUsername($infoDeMonAmi["username"]);
+            
             ?>
             <br>
 
@@ -105,12 +112,9 @@ $postDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
             
         ?>
         <br>
-        <form method="GET">
-        <input type="search" name="research" placeholder="Rechercher un membre">
-        <input type="submit" value="recherche">
-    </form>
+        
 
-    <a href="dashboard.php"></a>
+    <a href="dashboard.php">Retour</a>
         
 
         </div>
