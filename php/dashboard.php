@@ -31,12 +31,25 @@ if(isset($_GET['research']) AND !empty($_GET['research'])){
 
 if(isset($_POST['Ajouter'])){
     require('../pdo/pdo.php');
-    $ajouteAmi = $pdo->prepare('INSERT INTO friendlist (friend_id,friend_username,user_id) VALUES (:friend_id, :friend_username, :user_id)');
-    $ajouteAmi->execute([
-        ":friend_id" => 0,
-        ":friend_username" => "bsdbs",
-        ":user_id" => 1
+    $idFriend  = filter_input(INPUT_POST,"idFriend");
+
+    // REQUETE 2 : Recuperer le username grace au friend_id que tu as récupérer en haut
+
+    $userfriend = $pdo->prepare('SELECT * FROM users WHERE username = :username');
+    $userfriend->execute([
+        ":username" => $idFriend 
     ]);
+    $result = $userfriend->fetchALL();
+    echo $result["id"];
+    // REQUETE 3 : fait
+
+
+     /* $ajouteAmi = $pdo->prepare('INSERT INTO friendlist (friend_id,friend_username,user_id) VALUES (:friend_id, :friend_username, :user_id)');
+     $ajouteAmi->execute([
+        ":friend_id" => $idFriend,
+        ":friend_username" => $result["username"],
+        ":user_id" => $_SESSION["id"]
+    ]);  */
 }
 
 
@@ -163,7 +176,7 @@ if(isset($_POST['Ajouter'])){
                     
                     echo '<a href="friendDashboard.php?id='.$valueInAllMembers['id'].'">'.$valueInAllMembers['username'].'</a>'.
                     '<form method="POST" action="dashboard.php">'.
-                    '<input type="hidden" name="id" value="' . $valueInAllMembers['id'] . '" />'.
+                    '<input type="hidden" name="idFriend" value="'. $valueInAllMembers['id'] . '" />'.
                     '<input type="submit" name="Ajouter" value="Ajouter">'.
                     '</form>';
                     
