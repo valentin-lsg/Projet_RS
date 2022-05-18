@@ -4,12 +4,11 @@ $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 include("fonctionsPHP.php");
 require("../pdo/pdo.php");;
 
+
 $maRequete = $pdo->prepare("SELECT * FROM profil WHERE user_id = :id");
-// Etape 2 : J'exécute la requête
 $maRequete->execute([
     ":id" => $id
 ]);
-// Etape 3 : Je récupère LE résultat
 $pageProfilDeMonAmi = $maRequete->fetch(PDO::FETCH_ASSOC);
 
 $maRequete = $pdo->prepare("SELECT * FROM users WHERE id = :id");

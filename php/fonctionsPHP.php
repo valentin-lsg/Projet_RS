@@ -534,6 +534,7 @@ function afficherMesPublications($id){
             echo '<h2>'.$valueMesPosts["title"].'</h2>'.
             $maBaliseExiste.'
                 <div class="maPublication">'.$valueMesPosts["text"].'</div>
+                <label for="commentaire">Votre Commentaire :</label><input name="commentaire" type="text"><br>
                 <a href="voirCommentaire.php?id='.$valueMesPosts["id"].'">
                         Voir les commentaires
                     </a>';
@@ -542,6 +543,14 @@ function afficherMesPublications($id){
              
     }
     
+};
+
+function commenterUnePublication($idDuPost, $userId){
+    $ajouterCeCommentaire = filter_input(INPUT_POST, "commentaire");
+    if($ajouterCeCommentaire){
+        
+    }
+
 };
 
 
