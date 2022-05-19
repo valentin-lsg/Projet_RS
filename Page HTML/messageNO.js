@@ -49,7 +49,7 @@ function postMessage(event){
     requeteAjax.send(data);
 }
 
-document.querySelector("form").addEventListener("submit", postMessage);
+document.querySelector("form").addEventListener("submit", postMessage());
 
 // Intervale de rafraichissement
 

@@ -32,7 +32,7 @@ gererMonCompte();
         <span>Nom d'utilisateur : <?= $userInfos["username"] ?></span><br>
 
         
-        <form action="" method="post">
+        <form action="" method="post"> <!-- ICI YA UN FORMULAIRE -->
             <button name="desactiverCompte" type="submit" style="color:orange">Désactiver votre compte</button><br>
             <button name="supprimerCompte" type="submit" style="color:red">Supprimer définitivement votre compte</button>
         </form>
@@ -42,7 +42,7 @@ gererMonCompte();
  
     <section>
         <h2>Changer mes informations</h2>
-            <form action="" method="post">
+            <form action="" method="post"> <!-- ICI YA UN FORMULAIRE -->
                 <label for="username">Nom d'utilisateur :</label>
                 <input name="username" type="text"><br>
 
@@ -76,7 +76,7 @@ gererMonCompte();
 
     <section>
         <h2>Changer votre mot de passe:</h2>
-        <form action="" method="post">
+        <form action="" method="post"> <!-- ICI YA UN FORMULAIRE -->
             <label for="actualPassword">Votre mot de passe actuel :</label>
             <input pattern="[A-Za-z0-9]+" placeholder="********" name="actualPassword" type="password"><br>
             

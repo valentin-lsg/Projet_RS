@@ -1,0 +1,173 @@
+body {
+    width: 100%;
+    background-color: #110D44;
+    margin: 0;
+    padding: 0;
+}
+
+img.displayed {
+    width: 9%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#page {
+    width: 1150px;
+    height: auto;
+    background-color: white;
+    display: flex;
+    position: absolute;
+    top: 80%; left: 50%;
+    transform: translate(-50%, -50%);
+    flex-flow: column wrap;
+    border-radius: 13px;
+}
+
+#informations {
+    font-family: Tahoma,sans-serif;
+    font-size: 30px;
+    margin-top: 50px;
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+#username {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#lastName {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#firstName {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#mail {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#country {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#birthDate {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#phoneNumber {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#desactiverAccount {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    color: orange;
+    width: 250px;
+    padding: 3px;
+    margin-top: 10px;
+    margin-left: 70px;
+}
+
+#suppAccount {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    color: red;
+    width: 370px;
+    padding: 3px;
+    margin-top: 5px;
+    margin-left: 70px;
+    margin-bottom: 50px;
+}
+
+#changeInfos {
+    font-family: Tahoma, sans-serif;
+    font-size: 30px;
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+#newUsername {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#newLastName {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#newFirstName {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#newMail {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#newCountry {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#newBirthDate {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#newNumber  {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+    margin-bottom: 50px;
+}
+
+#changeMdp {
+    font-family: Tahoma, sans-serif;
+    font-size: 30px;
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+#actualMdp {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#newMdp {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#confirmNewMdp {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    margin-left: 70px;
+    margin-bottom: 50px;
+}

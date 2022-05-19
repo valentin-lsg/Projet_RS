@@ -301,6 +301,7 @@ function fromTableProfil($id){
     return $result;
 };
 
+
 function afficherMonImageDeProfil($id){
     $result = fromTableProfil($id);
     $imageDeMonUser = $result["profil_picture"];

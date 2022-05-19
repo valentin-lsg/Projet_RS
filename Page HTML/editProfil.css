@@ -1,0 +1,102 @@
+body {
+    width: 100%;
+    background-color: #110D44;
+    margin: 0;
+    padding: 0;
+}
+
+img.displayed {
+    width: 9%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#page {
+    width: 1150px;
+    height: auto;
+    background-color: white;
+    display: flex;
+    position: absolute;
+    top: 83%; left: 50%;
+    transform: translate(-50%, -50%);
+    flex-flow: column wrap;
+    border-radius: 13px;
+}
+
+#editPhoto {
+    font-family: Tahoma,sans-serif;
+    font-size: 30px;
+    margin-top: 50px;
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+#photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #6F8695;
+    margin-left: 70px;
+    margin-bottom: 20px;
+}
+
+#openPhoto {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    width: 200px;
+    padding: 3px;
+    margin-top: 5px;
+    margin-left: 70px;
+    margin-bottom: 50px;
+}
+
+#editBanner {
+    font-family: Tahoma, sans-serif;
+    font-size: 30px;
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+#banner {
+    width: 400px;
+    height: 150px;
+    background-color: #6F8695;
+    margin-left: 70px;
+    margin-bottom: 20px;
+}
+
+#openBanner {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    width: 200px;
+    padding: 3px;
+    margin-top: 5px;
+    margin-left: 70px;
+    margin-bottom: 50px;
+}
+
+#editBiography {
+    font-family: Tahoma, sans-serif;
+    font-size: 30px;
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+#writeBiography {
+    max-width: 450px;
+    height: 75px;
+    margin-left: 70px;
+    resize: none;
+}
+
+#saveBiography {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    width: 200px;
+    padding: 3px;
+    margin-top: 5px;
+    margin-left: 70px;
+    margin-bottom: 50px;
+}
