@@ -3,21 +3,37 @@ session_start();
 include("fonctionsPHP.php");
 
 $idDuPost = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+
 if($idDuPost){
     require("../pdo/pdo.php");
-    $marequete = $pdo->prepare("SELECT * FROM commentary");
-    $marequete->execute();
+    $marequete = $pdo->prepare("SELECT * FROM commentary where post_id=:post_id");
+    $marequete->execute([
+        ":post_id" => $idDuPost
+    ]);
     $commentaire = $marequete->fetchAll(PDO::FETCH_ASSOC);
     
-    $idDeCeluiQuiACommente = $commentaire["user_id"];
+
+
+}
+
+function quiCommente($idDeCeluiQuiACommente){
+    require("../pdo/pdo.php");
+    $marequete = $pdo->prepare("SELECT * FROM commentary where user_id=:user_id");
+    $marequete->execute([
+        ":user_id" => $idDeCeluiQuiACommente
+    ]);
+    $quiCommente = $marequete->fetch(PDO::FETCH_ASSOC);
+
     $marequete = $pdo->prepare("SELECT * FROM users where id=:id");
     $marequete->execute([
         ":id" => $idDeCeluiQuiACommente
     ]);
-    $nomUtilisateur = $marequete->fetchAll(PDO::FETCH_ASSOC);
-
-
+    $usernameDeCeluiQuiCommente = $marequete->fetch(PDO::FETCH_ASSOC);
+    echo $usernameDeCeluiQuiCommente["username"];
+    
 }
+
+   
 
 
 
@@ -58,8 +74,11 @@ td, th {
         <tbody>
             <?php foreach($commentaire as $valueInCommentaire): ?>
                 <tr>
-                    <td><?= $nomUtilisateur["username"] ?></td>
+                    <td><?php $idDeCeluiQuiACommente = quiCommente($valueInCommentaire['user_id']);    ?></td>
                     <td><?= $valueInCommentaire["text"] ?></td>
+                    <?php 
+                        
+                    ?>
                     <!-- <td>  /* $valueInCommentaire["reaction"] */ </td> -->
                 </tr>
             <?php endforeach; ?>
