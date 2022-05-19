@@ -72,7 +72,7 @@ checkLogin();
         
       
               
-      <a href="dashboard.php">Retour</a>
+      <a href="profil.php">Retour</a>
     
     
     

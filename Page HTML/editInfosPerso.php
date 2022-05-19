@@ -9,6 +9,7 @@
 <body>
     <img class="displayed" src="../Page HTML/image/testhibou3.png" alt="">
     <div id="page">
+        
         <text id="informations">Mes informations</text>
         <text id="username">Nom d'utilisateur : </text>
         <text id="lastName">Nom de famille : </text>

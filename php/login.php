@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" type="image/x-icon" sizes="16x16" href="../Page HTML/image/logoNO.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../Page HTML/ConnexionInscriptionNO.css">
-    <title>Night~of~Owls</title>
+    <title>Night of Owls</title>
 
 </head>
 
@@ -47,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="col">
                 <div class="formulaire">
-                    <h1>Bienvenue sur Night~of~Owls Social Club</h1>
+                    <h1>Bienvenue sur Night of Owls</h1>
 
                     <form action="" method="POST" class="row g-3 needs-validation" novalidate>
                         <div class="col-md-4">

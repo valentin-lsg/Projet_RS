@@ -77,120 +77,71 @@ if(isset($_POST['Ajouter'])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page de profil <?= $_SESSION["username"] ?></title>
+    <link rel="stylesheet" href="../Page HTML/profil.css" />
 </head>
+
+
 <body>
-    <style>
-        * {
-            box-sizing: border-box;
-            }
+    <div id="page">
+      <div id="Top">
 
-            /* Create two equal columns that floats next to each other */
-        .column {
-        float: left;
-        width: 50%;
-        padding: 10px;
-        height: 300px; /* Should be removed. Only for demonstration */
-        }
+       <?php afficherMaBanniere("") ?>
 
-        /* Clear floats after the columns */
-        .row:after {
-        content: "";
-        display: table;
-        clear: both;
-        }
-    </style>
+        <div class="banner_container">
+          <?php afficherMonImageDeProfil(""); ?>
 
-    <style>
-    .maPublication {
-    width: 320px;
-    padding: 10px;
-    border: 5px solid gray;
-    margin: 0;
-    }
-    </style>
-
-    <div class="row">
-        <div class="column">
-            <!-- Afficher mon username -->
-            <p>Votre username :</p>
-            <?php 
+          <div class="fleex">
+            <div id="name"><?php 
             afficherMonUsername("");
-            ?>
-            <br>
-
-            <!-- Afficher son image de profil -->
-            <p>Votre image de profil actuel est :</p>
-            <?php 
-            afficherMonImageDeProfil("");
-            ?>
-
-            <!-- Afficher ma bannière -->
-            <br>
-            <p>Votre image de banniere actuel est :</p>
-            <?php 
-            afficherMaBanniere("");
-            ?>
-
-            <!-- Afficher ma description -->
-            <br>
-            <p>Votre biographie est :</p>
+            ?></div>
+            <div id="biography">
             <?php 
             afficherMaBiographie("");
             ?>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      
 
-            <h2>Mes publications :</h2>
-            <h3>Créer une publication</h3>
+      <div class="margin">
+        <div id="publication_container">
+        <form action="" method="post" enctype="multipart/form-data">
+          <div id="publication"> 
+            <input id="text" placeholder="Titre" type="text" name="titrePublication">
 
-            <form action="" method="post" enctype="multipart/form-data">
+            <input type="text" placeholder="Contenu..."id="text" name="textePublication">
+            
+            <div id="button">
+              <input class="button button1" name="imagePublication" type="file">
+              
+            </div>
+            <button name="boutonEnvoiMonPost" type="submit" class="button button2">Envoyer</button>
+          </div>
+        </form>
+        </div>
+      </div>
 
-                <label for="titrePublication">Titre de ma publication :</label><br>
-                <input type="text" name="titrePublication">
-                <br>
-
-                <label for="textePublication">Texte de ma publication :</label><br>
-                <textarea style="resize:none" name="textePublication"  cols="30" rows="10"></textarea>
-                <br>
-
-                <label for="imagePublication">Joindre une image</label>
-                <input name="imagePublication" type="file">
-                <br>
-
-                <button name="boutonEnvoiMonPost" type="submit">Envoyer</button>
-                <br>
-
-            </form>
-
-            <!-- Ajouter sa photo de profil -->
+      <div class="flex">
+        <div id="personnalInformations">
+            <br>
             <a href="profilSetting.php">Editer mon profil</a><br>
             <a href="personnalSetting.php">Editer vos infos persos</a><br>  
             <a href="deconnexion.php">Se deconnecter</a>
-        </div>
-        <!-- Contenu :
-            ETAPE 1 : Créer une publication apparaissant sur son profil
-            ETAPE 2 : Commenter une publication ou un autre commentaire (un niveau maximum)
-            ETAPE 3 : Réagir à une publication ou un commentaire avec un émoji -->
-            <!-- maPublication -->
-
-        <div class="column">
-            
-        <?php 
-            afficherMesPublications("");
-            
-        ?>
-
-        <br>
-        <form method="GET">
-        <input type="search" name="research" placeholder="Rechercher un membre">
-        <input type="submit" value="recherche">
-    </form>
-
-    <section class="afficher_membres">
-        <?php
-            if($allmembers->rowCount() > 0){
+            <br>
+            <form method="GET">
+            <input type="search" name="research" placeholder="Rechercher un membre">
+            <input type="submit" value="recherche">
+            </form>
+            <br>
+            <?php
+            function afficherAmi($allmembers){
+                if($allmembers->rowCount() > 0){
                 foreach($allmembers as $valueInAllMembers){
                     if($valueInAllMembers["id"] != $_SESSION["id"]){
                         echo '<a href="friendDashboard.php?id='.$valueInAllMembers['id'].'">'.$valueInAllMembers['username'].'</a>'.
-                        '<form method="POST" action="dashboard.php">'.
+                        '<form method="POST" action="profil.php">'.
                         '<input type="hidden" name="idFriend" value="'. $valueInAllMembers['id'] . '" />'.
                         '<input type="submit" name="Ajouter" value="Ajouter">'.
                         '</form>';
@@ -198,11 +149,30 @@ if(isset($_POST['Ajouter'])){
                     
                 }  
             }
-            ?>
-    </section>
-        
-
+            };
+            if($allmembers){
+                afficherAmi($allmembers);
+            }
+            
+    ?>
         </div>
+        
+            <div class="content_all">
+            <?php afficherMesPublications($id) ; ?>            
+                
+        </div>
+      </div>
+
+
     </div>
-</body>
+
+   
+  </body>
 </html>
+
+
+    
+
+    
+
+ 
