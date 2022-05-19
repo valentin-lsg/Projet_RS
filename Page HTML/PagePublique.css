@@ -1,0 +1,150 @@
+#personnalInformations {
+    position: absolute;
+    width: 300px;
+    height: 800px;
+    background-color: #B8B8B8;
+    border-radius: 13px;
+    margin-top: 440px;
+    margin-left: 30px;
+    float: left;
+}
+
+#membres {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #8F8F8F;
+    margin-top: 2em;
+    margin-left: 2em;
+}
+
+#membres:hover {
+    background-color: #707070;
+    cursor: pointer;
+}
+
+#reactionhibou{
+    height: 75%;
+}
+
+#commentBar {
+    width: 700px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: white;
+    z-index: 3;
+    margin-top: 450px;
+    margin-left: 40px;
+    cursor: text;
+    float: left;
+}
+
+#reaction {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0px;
+    background-color: #D8E8E9;
+    position: absolute;
+    z-index: 3;
+    margin-top: 400px;
+    margin-left: 50px;
+    float: left;
+}
+
+#reaction:hover {
+    background-color: #A4C9CC;
+    cursor: pointer;    
+}
+
+body {
+    width: 100%;
+    background-color: #110D44;
+    margin: 0;
+    padding: 0;
+}
+
+#page {
+    width: 1150px;
+    height: 2000px;
+    background-color: white;
+    margin: auto;
+    position: absolute;
+    top: 150%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-flow: column wrap;
+    border-radius: 13px;
+    float: left;
+}
+
+#Top {
+    width: 1150px;
+    height: 430px;
+    background-color: #E0E0E0;
+    border-radius: 13px;
+    float: left;
+}
+
+#banner {
+    width: 1150px;
+    height: 180px;
+    background-color: #6F8695;
+    position: absolute;
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+    float: left;
+}
+
+#picture {
+    width: 10em;
+    height: 10em;
+    background-color: black;
+    border-radius: 50%;
+    position: absolute;
+    margin-top: 120px;
+    margin-left: 120px;
+    float: left;
+}
+
+#name {
+    position: relative;
+    margin-left: 400px;
+    margin-top: 190px;
+    font-family: Tahoma, sans-serif;
+    font-size: 30px;
+    float: left;
+}
+
+#biography {
+    font-family: Tahoma, sans-serif;
+    margin-top: 10px;
+    margin-left: 400px;
+    padding-right: 20px;
+    float: left;
+}
+
+#content {
+    width: 780px;
+    height: 510px;
+    background-color: #6F8695;
+    display: flex;
+    z-index: 1;
+    border-radius: 13px;
+    margin-top: 10px;
+    margin-left: 340px;
+    float: left;
+}
+
+#post1 {
+    width: 700px;
+    height: 350px;
+    background-color: #E1DAB7;
+    border-radius: 10px;
+    display:flex;
+    position: absolute;
+    z-index: 2;
+    margin-top: 40px;
+    margin-left: 40px;
+    float: left;
+}
