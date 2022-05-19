@@ -31,25 +31,40 @@ if(isset($_GET['research']) AND !empty($_GET['research'])){
 
 if(isset($_POST['Ajouter'])){
     require('../pdo/pdo.php');
-    $idFriend  = filter_input(INPUT_POST,"idFriend");
 
-    // REQUETE 2 : Recuperer le username grace au friend_id que tu as récupérer en haut
+    $idFriend  = filter_input(INPUT_POST,"idFriend");    
 
-    $userfriend = $pdo->prepare('SELECT * FROM users WHERE username = :username');
+    // REQUETE 1 : Recuperer le username grace au friend_id que tu as récupérer en haut
+
+    $userfriend = $pdo->prepare('SELECT * FROM users WHERE id = :id');
     $userfriend->execute([
-        ":username" => $idFriend 
+        ":id" => $idFriend 
     ]);
-    $result = $userfriend->fetchALL();
-    echo $result["id"];
-    // REQUETE 3 : fait
+    $result = $userfriend->fetch();
 
+    // REQUETE 2 : Verifier si ami pas présent avant ajout.
 
-     /* $ajouteAmi = $pdo->prepare('INSERT INTO friendlist (friend_id,friend_username,user_id) VALUES (:friend_id, :friend_username, :user_id)');
-     $ajouteAmi->execute([
+     $verification = $pdo->prepare('SELECT * FROM friendlist WHERE friend_id = :friend_id AND user_id = :user_id');
+     $verification->execute([
+         ":friend_id" => $idFriend,
+         ":user_id" => $_SESSION["id"] 
+     ]);
+     $resultVerification = $verification->fetch();
+    
+    if($resultVerification['friend_id'] != $idFriend){
+
+    // REQUETE 3 : Ajout dans la friend list 
+    $ajouteAmi = $pdo->prepare('INSERT INTO friendlist (friend_id,friend_username,user_id) VALUES (:friend_id, :friend_username, :user_id)');
+    $ajouteAmi->execute([
         ":friend_id" => $idFriend,
         ":friend_username" => $result["username"],
         ":user_id" => $_SESSION["id"]
-    ]);  */
+    ]); 
+    };
+    
+
+     
+    
 }
 
 
@@ -61,7 +76,7 @@ if(isset($_POST['Ajouter'])){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Page de profil <?= $_SESSION["username"] ?></title>
 </head>
 <body>
     <style>
@@ -173,14 +188,15 @@ if(isset($_POST['Ajouter'])){
         <?php
             if($allmembers->rowCount() > 0){
                 foreach($allmembers as $valueInAllMembers){
+                    if($valueInAllMembers["id"] != $_SESSION["id"]){
+                        echo '<a href="friendDashboard.php?id='.$valueInAllMembers['id'].'">'.$valueInAllMembers['username'].'</a>'.
+                        '<form method="POST" action="dashboard.php">'.
+                        '<input type="hidden" name="idFriend" value="'. $valueInAllMembers['id'] . '" />'.
+                        '<input type="submit" name="Ajouter" value="Ajouter">'.
+                        '</form>';
+                    }
                     
-                    echo '<a href="friendDashboard.php?id='.$valueInAllMembers['id'].'">'.$valueInAllMembers['username'].'</a>'.
-                    '<form method="POST" action="dashboard.php">'.
-                    '<input type="hidden" name="idFriend" value="'. $valueInAllMembers['id'] . '" />'.
-                    '<input type="submit" name="Ajouter" value="Ajouter">'.
-                    '</form>';
-                    
-                    }  
+                }  
             }
             ?>
     </section>
