@@ -33,6 +33,8 @@ function getMessages(){
     $resultats = $db->query("SELECT * FROM messages ORDER BY created_at DESC LIMIT 20");
     $messages = $resultats->fetchAll();
 
+    // $msg[$send] = str_replace(':)', '<img src="emojis/emoji_smile.png" />', $msg[$send]); // pour mettre les smiley
+
     // Affichage des données format JSON
     echo json_encode($messages);
 }
@@ -53,6 +55,8 @@ function postMessage(){
     $send = $_POST["send"];
     $who_receive = $_POST["who_receive"];
 
+    // $msg[$send] = str_replace(':)', '<img src="emojis/emoji_smile.png" />', $msg[$send]); // pour mettre les smiley
+
     // Requête pour insérer les données
     $query = $db->prepare("INSERT INTO messages SET who_send = :who_send, who_receive = :who_receive, send = :send, created_at = NOW()");
     $query->execute([
@@ -60,6 +64,9 @@ function postMessage(){
         "send" => $send,
         "who_receive" => $who_receive
     ]);
+
+    // $msg[$send] = str_replace(':)', '<img src="emojis/emoji_smile.png" />', $msg[$send]); // pour mettre les smiley
+
     echo json_encode(["status" => "succès"]);
 }
 

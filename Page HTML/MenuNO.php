@@ -56,8 +56,7 @@
 
       <div class="messages">
         <br>
-      </div>
-
+        </div>
       <div class="userInput">
         <form action="messageNO.php?task=write" method="POST">
           <input type="text" id="who_send" name="who_send"  placeholder="Nom">
