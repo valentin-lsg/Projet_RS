@@ -6,7 +6,7 @@ function makeDir($path)
      return is_dir($path) || mkdir($path);
 }
 
-// Verifier cohérence de date
+// Verifier cohérence de la date
 function verifDate($birthday){
     $verifDateLimit = explode("-", $birthday);
     echo $verifDateLimit[0];
@@ -69,7 +69,7 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
 
             /* echo '<script>','alert("Vous avez été correctement inscrit en tant que '.$username1.' ")'.'</script>'; */
             http_response_code(302);
-            header("location: login.php");
+            header("location: index.php");
             exit();
             
             } catch (\PDOException $e) {
@@ -104,7 +104,7 @@ function seConnecter($login, $username1, $candidate_password){
         $_SESSION["username"]=$username1;
         $_SESSION["id"]=$row["id"];
         http_response_code("302");
-        header('Location: dashboard.php');
+        header('Location: profil.php');
         exit();
     } else {
         echo '<script>','alert("Vos informations de connexion sont incorrectes.")'.'</script>';
@@ -115,7 +115,7 @@ function seConnecter($login, $username1, $candidate_password){
 function checkLogin(){
     if(!isset($_SESSION["username"])) { 
         http_response_code(302);
-        header('Location: login.php');
+        header('Location: index.php');
         exit();
     }
     checkAccountState();
@@ -169,7 +169,7 @@ function gererMonCompte(){
             ":id" => $id
             ]);
             http_response_code(302);
-            header("location: login.php");
+            header("location: index.php");
             exit();
         } 
     }
@@ -301,22 +301,24 @@ function fromTableProfil($id){
     return $result;
 };
 
+
 function afficherMonImageDeProfil($id){
     $result = fromTableProfil($id);
     $imageDeMonUser = $result["profil_picture"];
-    echo "<img style='width: 10%;' src='$imageDeMonUser' alt='Image de profil'>".'<br>';
+    echo "<div id='picture'><img style='width : 100%; height : 100% ; object-fit : cover;' src='$imageDeMonUser' alt='Image de profil'></div>";
 };
 
 function afficherMaBanniere($id){
     $result = fromTableProfil($id);
     $banniereDeMonUser = $result["banner"];
-    echo "<img style='width: 10%;' src='$banniereDeMonUser' alt='Banniere de profil'>".'<br>';
+    echo "<div id='banner'><img style='width : 100%; height : 100% ; object-fit : cover;' src='$banniereDeMonUser' alt='Banniere de profil'></div>";
+    
 };
 
 function afficherMaBiographie($id){
     $result = fromTableProfil($id);
     $bioDeMonUser = $result["description"];
-    echo "<h3>$bioDeMonUser</h3>".'<br>';
+    echo "<h3>$bioDeMonUser</h3>";
 };
 
 function afficherMonUsername($username){
@@ -514,36 +516,39 @@ function afficherMesPublications($id){
         $mesPosts = fromTablePost($id);
     }
     
+   
+   
     
     foreach($mesPosts as $valueMesPosts){
         
-        $monImage = '<img src="'.$valueMesPosts["image"].'" width="150px"  alt="image">';
+        $monImage = '<img id="post1" src="'.$valueMesPosts["image"].'"  alt="image">';
         $maBaliseExiste = ($valueMesPosts["image"] != NULL) ? $monImage : "";
 
         if(!$id){
-            echo '<h2>'.$valueMesPosts["title"].'</h2>'.
-            $maBaliseExiste.'
-                <div class="maPublication">'.$valueMesPosts["text"].'</div>
-                <a href="voirCommentaire.php?id='.$valueMesPosts["id"].'">
-                        Voir les commentaires
-                    </a>
-                <a href="deletePoste.php?id='.$valueMesPosts["id"].'">
-                            Supprimer
-                        </a>';
+            echo  '<div id="content"><h2>'.$valueMesPosts["title"].'</h2>'
+            .$maBaliseExiste.
+            '<div id="post2">'.$valueMesPosts["text"].'
+            </div>'.'<a href="voirCommentaire.php?id='.$valueMesPosts["id"].'">
+            Voir les commentaires
+        </a>
+    <a href="deletePoste.php?id='.$valueMesPosts["id"].'">
+                Supprimer
+            </a>'.'</div>';
         }else{
-            echo '<h2>'.$valueMesPosts["title"].'</h2>'.
+            echo '<div id="content"><h2>'.$valueMesPosts["title"].'</h2>'.
             $maBaliseExiste.'
-                <div class="maPublication">'.$valueMesPosts["text"].'</div>
+                <div id="post2">'.$valueMesPosts["text"].'</div>
                 <form method="post">
-                <label for="commentaire">Votre Commentaire :</label>
                 <input name="commentaire" type="text">
                 <input type="hidden" name="idDeCePost" value="'.$valueMesPosts["id"].'">
                 <button type="submit" name="sendCommentaire">Envoyer</button></form>
                 <br>
                 <a href="voirCommentaire.php?id='.$valueMesPosts["id"].'">
                         Voir les commentaires
-                    </a>';
+                    </a>'.'</div>';
         }
+        
+
         
          
     }
@@ -584,5 +589,26 @@ function supprimerPublication($idDuPost){
 
     
     
+};
+
+function afficherMaListeAmi(){
+    $id = $_SESSION["id"];
+    require("../pdo/pdo.php");
+    $maRequete = $pdo->prepare("SELECT * FROM friendlist where user_id=:user_id ORDER BY id ASC");
+    $maRequete->execute([
+    ":user_id" => $id
+    ]);
+    $result = $maRequete->fetchall(PDO::FETCH_ASSOC);
+    return $result;
+
+
+};
+
+function supprimerUnAmi($friend_id){
+    require("../pdo/pdo.php");
+    $maRequete = $pdo->prepare("DELETE FROM friendlist where friend_id=:friend_id");
+    $maRequete->execute([
+    ":friend_id" => $friend_id
+    ]);
 };
 

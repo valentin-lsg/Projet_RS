@@ -7,7 +7,7 @@ $userInfos = fromTableUsers();
 // Pour éviter que les comptes actifs puissent accéder à cette page.
 if($userInfos["account_state"] != 1){
     http_response_code(302);
-    header('Location: login.php');
+    header('Location: profil.php');
     exit();
 }
 
@@ -27,6 +27,6 @@ if($userInfos["account_state"] != 1){
     <form action="" method="post">
         <button name="reactiverCompte" type="submit">Réactiver le compte</button><br>
     </form>
-    <a href="login.php">Retour au login</a>
+    <a href="index.php">Retour au login</a>
 </body>
 </html>

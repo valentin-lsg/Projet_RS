@@ -14,6 +14,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     if(isset($_FILES['banner'])){
         uploadMaBanniere();
+        /* fonction qui créer une balise image dans la div "photo" */
         $changementEffectue++;
     };
     
@@ -37,41 +38,47 @@ checkLogin();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Modifier le profil</title>
+    <link rel="stylesheet" href="../Page HTML/editProfil.css">
 </head>
 <body>
 
+    <img class="displayed" src="../PAGE HTML/image/testhibou3.png">
+    <div id="page">
+      
+    <form method="post" action="" enctype="multipart/form-data">
+        <text id="editPhoto">Modifier la photo de profil</text>
+
+        <div><img id="photo" src="" alt=""></div> <!-- Afficher l'image qui a été chargée. -->
+
         
-      <form method="post" action="" enctype="multipart/form-data">
+        <input id="openPhoto" type="file" name="profilPicture">
+            
 
-                <!-- Changer ma photo de profil -->
-                <p>
-                    <h1>Formulaire photo profil</h1>
-                    <input type="file" name="profilPicture"><br>
-                </p>
-                <br>
+        <!-- <button id="openPhoto">Choisir un fichier</button> -->
+        <text id="editBanner">Modifier la bannière de profil</text>
 
-                <!-- Changer ma bannière -->
-                <p>
-                    <h1>Formulaire banniere</h1>
-                    <input type="file" name="banner"><br>
-               </p>
-               <br>
+        <div id="banner"></div>
 
-               <!-- Changer la description -->
-               <p>
-                   <h1>Formulaire description</h1>
-                   <input type="text" name="description" ><br>
-               </p>
+        <input id="openBanner" type="file" name="banner">  
 
-               <!-- Bouton d'envoi -->
-            <button type="submit">Enregistrer les changements</button>
-        </form>
+        <!-- <button id="openBanner">Choisir un fichier</button> -->
+        <text id="editBiography">Modifier la biographie</text>   
 
-        <br>
+        <textarea name="description"  id="writeBiography" placeholder="Biographie" size="20" maxlength="200"></textarea>
         
-    <a href="deconnexion.php">Se deconnecter</a>
-    <br>
-    <a href="dashboard.php">Retour</a>
+        <button type="submit" id="saveBiography">Enregistrer</button>
+    </form>
+        
+      
+              
+      <a href="profil.php">Retour</a>
+    
+    
+    
+    </div>
+    
+    
 </body>
 </html>
+

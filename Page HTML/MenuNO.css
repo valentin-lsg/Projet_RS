@@ -1,28 +1,93 @@
-.messages{
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    background-color: #aec6cf;
-    border: 20px solid #aec6cf;
-    border-radius: 10px;
-    margin-left: 60%;
-    margin-right: 1em;
-    margin-top: 1em;
-    align-content: space-around;
+.messages {
+  display: flex;
+  flex-direction: column;
+  background-color: #aec6cf;
+  border: 9px solid #aec6cf;
+  border-radius: 10px;
+  width: 50%;
+  height: 78%;
 }
 
-.message{
-    background-color: #D8E4E8;
-    border: 20px solid #D8E4E8;
-    border-radius: 10px;
-    margin: 1em;
+.chat {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: end;
+  height: 85vh;
 }
 
-.userInput{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 60%;
-    margin-right: 1em;
-    padding : 1em;
+.message {
+  background-color: #d8e4e8;
+  border: 20px solid #d8e4e8;
+  border-radius: 10px;
+  margin: 1em;
+}
+
+.userInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em 0;
+  width: 55%;
+  justify-content: center;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1%;
+}
+
+.form select {
+  border: #d9b8b8 1px solid;
+  border-radius: 5px;
+  background-color: #e2e2e25c;
+  color: black;
+  text-transform: capitalize;
+}
+
+select option {
+  text-transform: capitalize;
+}
+
+.form input {
+  width: 48%;
+  padding: 5px;
+  padding-left: 5px;
+  font-size: 17px;
+  border: 1px solid #cbcccf;
+  background-color: #f2f2f3;
+  border-radius: 8px;
+  padding-left: 15px;
+  outline: none;
+}
+.flex {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  padding: 0 5%;
+  scrollbar-width: thin;
+  scrollbar-color: black #fffffffc;
+}
+.end {
+  align-self: end;
+}
+.start {
+  align-self: start;
+}
+
+.num {
+  border-bottom: 1px solid black;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.form button {
+  background-color: #3e73f1;
+  color: white;
+  width: 16%;
+  border-radius: 7px;
+  border: none;
 }
