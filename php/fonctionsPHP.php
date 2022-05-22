@@ -6,7 +6,7 @@ function makeDir($path)
      return is_dir($path) || mkdir($path);
 }
 
-// Verifier cohérence de date
+// Verifier cohérence de la date
 function verifDate($birthday){
     $verifDateLimit = explode("-", $birthday);
     echo $verifDateLimit[0];
@@ -69,7 +69,7 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
 
             /* echo '<script>','alert("Vous avez été correctement inscrit en tant que '.$username1.' ")'.'</script>'; */
             http_response_code(302);
-            header("location: login.php");
+            header("location: index.php");
             exit();
             
             } catch (\PDOException $e) {
@@ -115,7 +115,7 @@ function seConnecter($login, $username1, $candidate_password){
 function checkLogin(){
     if(!isset($_SESSION["username"])) { 
         http_response_code(302);
-        header('Location: login.php');
+        header('Location: index.php');
         exit();
     }
     checkAccountState();
@@ -169,7 +169,7 @@ function gererMonCompte(){
             ":id" => $id
             ]);
             http_response_code(302);
-            header("location: login.php");
+            header("location: index.php");
             exit();
         } 
     }
@@ -589,5 +589,26 @@ function supprimerPublication($idDuPost){
 
     
     
+};
+
+function afficherMaListeAmi(){
+    $id = $_SESSION["id"];
+    require("../pdo/pdo.php");
+    $maRequete = $pdo->prepare("SELECT * FROM friendlist where user_id=:user_id ORDER BY id ASC");
+    $maRequete->execute([
+    ":user_id" => $id
+    ]);
+    $result = $maRequete->fetchall(PDO::FETCH_ASSOC);
+    return $result;
+
+
+};
+
+function supprimerUnAmi($friend_id){
+    require("../pdo/pdo.php");
+    $maRequete = $pdo->prepare("DELETE FROM friendlist where friend_id=:friend_id");
+    $maRequete->execute([
+    ":friend_id" => $friend_id
+    ]);
 };
 

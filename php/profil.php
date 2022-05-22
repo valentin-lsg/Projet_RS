@@ -4,7 +4,6 @@ session_start();
 include("fonctionsPHP.php");
 
 checkLogin();
-
 /* Création d'une publication */
 $boutonEnvoiMonPost = filter_input(INPUT_POST, "boutonEnvoiMonPost");
 $titrePublication = filter_input(INPUT_POST, "titrePublication");
@@ -31,36 +30,36 @@ if(isset($_GET['research']) AND !empty($_GET['research'])){
 
 if(isset($_POST['Ajouter'])){
     require('../pdo/pdo.php');
-
     $idFriend  = filter_input(INPUT_POST,"idFriend");    
-
-    // REQUETE 1 : Recuperer le username grace au friend_id que tu as récupérer en haut
+    
+    // REQUETE 1 : Recuperer le username de l'ami grâce à $idFriend
 
     $userfriend = $pdo->prepare('SELECT * FROM users WHERE id = :id');
     $userfriend->execute([
         ":id" => $idFriend 
     ]);
     $result = $userfriend->fetch();
-
-    // REQUETE 2 : Verifier si ami pas présent avant ajout.
+    // REQUETE 2 : Verifier si l'ami n'est pas déjà dans la friendlist de l'utilisateur
 
      $verification = $pdo->prepare('SELECT * FROM friendlist WHERE friend_id = :friend_id AND user_id = :user_id');
      $verification->execute([
          ":friend_id" => $idFriend,
          ":user_id" => $_SESSION["id"] 
      ]);
-     $resultVerification = $verification->fetch();
-    
-    if($resultVerification['friend_id'] != $idFriend){
+     $resultat = $verification->rowCount();
+     
+    // Si $resultat == 0 alors l'ami n'est pas dans la friendlist de l'utilisateur
+    if($resultat == 0){
 
-    // REQUETE 3 : Ajout dans la friend list 
-    $ajouteAmi = $pdo->prepare('INSERT INTO friendlist (friend_id,friend_username,user_id) VALUES (:friend_id, :friend_username, :user_id)');
-    $ajouteAmi->execute([
-        ":friend_id" => $idFriend,
-        ":friend_username" => $result["username"],
-        ":user_id" => $_SESSION["id"]
-    ]); 
-    };
+      // REQUETE 3 : Ajout dans la friendlist 
+      $ajouteAmi = $pdo->prepare('INSERT INTO friendlist (friend_id,friend_username,user_id) VALUES (:friend_id, :friend_username, :user_id)');
+      $ajouteAmi->execute([
+          ":friend_id" => $idFriend,
+          ":friend_username" => $result["username"],
+          ":user_id" => $_SESSION["id"]
+      ]); 
+    }
+    
     
 
      
@@ -78,6 +77,7 @@ if(isset($_POST['Ajouter'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page de profil <?= $_SESSION["username"] ?></title>
     <link rel="stylesheet" href="../Page HTML/profil.css" />
+
 </head>
 
 
@@ -104,11 +104,33 @@ if(isset($_POST['Ajouter'])){
       </div>
     
       
-
+    <div class="coteAcote">
       <div class="margin">
         <div id="publication_container">
         <form action="" method="post" enctype="multipart/form-data">
           <div id="publication"> 
+          <h2>Créer une publication :</h2>
+
+            <input id="text" placeholder="Titre" type="text" name="titrePublication">
+
+            <input type="text" placeholder="Contenu..."id="text" name="textePublication">
+            
+            <div id="button">
+             
+              <input  class="button button1" name="imagePublication" type="file">
+              
+            </div>
+            <button name="boutonEnvoiMonPost" type="submit" class="button button2">Envoyer</button>
+          </div>
+        </form>
+        </div>
+      </div>
+      <div class="margin">
+        <div id="publication_container">
+        <form action="" method="post" enctype="multipart/form-data">
+          <div id="publication"> 
+          <h2>Créer une page :</h2>
+
             <input id="text" placeholder="Titre" type="text" name="titrePublication">
 
             <input type="text" placeholder="Contenu..."id="text" name="textePublication">
@@ -122,10 +144,13 @@ if(isset($_POST['Ajouter'])){
         </form>
         </div>
       </div>
+    </div>
 
       <div class="flex">
         <div id="personnalInformations">
             <br>
+            <h3>Gérer votre compte :</h3>
+            <a href="../Page HTML/MenuNO.php">Envoyer un message</a><br>
             <a href="profilSetting.php">Editer mon profil</a><br>
             <a href="personnalSetting.php">Editer vos infos persos</a><br>  
             <a href="deconnexion.php">Se deconnecter</a>
@@ -136,29 +161,63 @@ if(isset($_POST['Ajouter'])){
             </form>
             <br>
             <?php
-            function afficherAmi($allmembers){
+            if(isset($allmembers)){
+              rechercherAmi($allmembers);
+          };
+
+            
+            function rechercherAmi($allmembers){
+              
                 if($allmembers->rowCount() > 0){
                 foreach($allmembers as $valueInAllMembers){
                     if($valueInAllMembers["id"] != $_SESSION["id"]){
+                      require('../pdo/pdo.php');
+                      $maRequete = $pdo->prepare("SELECT * FROM friendlist where user_id=:user_id and friend_id =:friend_id");
+                      $maRequete->execute([
+                      ":user_id" => $_SESSION["id"],
+                      ":friend_id" => $valueInAllMembers["id"]
+                      ]);
+                      $reponse = $maRequete->rowCount();
+                      
+                      if($reponse > 0){
+                        echo '<a href="friendDashboard.php?id='.$valueInAllMembers['id'].'">'.$valueInAllMembers['username'].'</a>'.
+                        '<form method="POST" action="profil.php">'.
+                        '<input type="hidden" name="idFriend" value="'. $valueInAllMembers['id'] . '" />'.
+                        '</form>';
+                      }else{
                         echo '<a href="friendDashboard.php?id='.$valueInAllMembers['id'].'">'.$valueInAllMembers['username'].'</a>'.
                         '<form method="POST" action="profil.php">'.
                         '<input type="hidden" name="idFriend" value="'. $valueInAllMembers['id'] . '" />'.
                         '<input type="submit" name="Ajouter" value="Ajouter">'.
                         '</form>';
+                      }
+                        
                     }
                     
                 }  
             }
             };
-            if($allmembers){
-                afficherAmi($allmembers);
-            }
+
+            
+            // Afficher la liste d'ami de l'utilisateur
+            $maListeAmi = afficherMaListeAmi();
+            echo "<table><tr><th>Votre liste d'ami :</th></tr>";
+            if(isset($maListeAmi)){
+              foreach($maListeAmi as $valueInMaListeAmi){
+                echo '<tr><td><form method="GET"action="deleteFriend.php?id='.$valueInMaListeAmi['friend_id'].
+                '"><button name="friend_id" type="submit" value="'.$valueInMaListeAmi['friend_id'].'">X</button> '.
+                '<a href="friendDashboard.php?id='.$valueInMaListeAmi['friend_id'].'">'.$valueInMaListeAmi['friend_username'].
+                '</a></form>'.'</td></tr>';
+              }
+            };      
+            echo "</table>";
+            
             
     ?>
         </div>
         
             <div class="content_all">
-            <?php afficherMesPublications($id) ; ?>            
+            <?php afficherMesPublications("") ; ?>            
                 
         </div>
       </div>

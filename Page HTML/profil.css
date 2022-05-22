@@ -139,13 +139,13 @@ body {
   gap: 6px;
 }
 
-#titre {
+/* #titre { */
   /*   background-color: #6f8695;
   border-radius: 13px;
   border-left: 52px solid red;
   margin-top: -6px;
   margin-left: -117px; */
-}
+/* } */
 
 #post1 {
   background-color: #e1dab7;
@@ -255,6 +255,13 @@ body {
   gap: 19px;
   justify-content: center;
   padding-left: 20px;
+}
+
+.coteAcote{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
 }
 
 #publication {

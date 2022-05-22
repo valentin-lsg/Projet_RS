@@ -133,7 +133,7 @@ if(isset($register)){
                         <div class="col-12">
                         <button class="btn btn-primary" name="register" type="submit">Envoyer</button>   
                         </div>
-                    <a href="login.php">Se connecter en cliquant ici</a>
+                    <a href="index.php">Se connecter en cliquant ici</a>
                     </form>
                     
 
