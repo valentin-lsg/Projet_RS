@@ -1,12 +1,14 @@
 <?php 
 
-// Créer un fichier sur le serveur spécifique à l'utilisateur.
+// Créer un fichier sur le serveur qui contiendra ce que l'utilisateur upload (photo profil, banniere).
+// * $path : Représente le repertoire cible
 function makeDir($path)
 {
      return is_dir($path) || mkdir($path);
 }
 
-// Verifier cohérence de la date
+// Verification de la cohérence de la date
+// * $birthday : Représente la date de naissance de l'utilisateur lors de son inscription
 function verifDate($birthday){
     $verifDateLimit = explode("-", $birthday);
     echo $verifDateLimit[0];
@@ -19,6 +21,8 @@ function verifDate($birthday){
 }
 
 // Envoi les données de l'utilisateur dans la base de donnée
+// * $register : Variable qui me permet de savoir si le bouton 'register' a été enclenché par l'utilisateur
+// * $lastname, $name, [...], $mail : Information que l'utilisateur entre lors de son inscription
 function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthday, $phone, $username1, $password, $mail){
     if(isset($register)) {
         require("../pdo/pdo.php");
@@ -57,7 +61,7 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
             ":user_id" => $idDeMonUser["id"]
             ]);
 
-            // Dernière étape : Lui créer des répertoires sur le serveur.
+            // Dernière étape : Lui créer un répertoire sur le serveur.
 
             $newPath = "../upload/profil/".$username1;
             makeDir($newPath);
@@ -84,6 +88,10 @@ function envoyerDansBaseDeDonnée($register, $lastname, $name, $country, $birthd
 
 };
 
+// Fonction de connexion
+// * $login : Variable qui me permet de savoir si le bouton 'login' a été enclenché par l'utilisateur
+// * $username1 : Le nom de compte
+// * $candidate_password : Le mot de passe associé au compte
 function seConnecter($login, $username1, $candidate_password){
     if(!$login){ // 
         if($username1==NULL or $candidate_password==NULL){
@@ -112,6 +120,8 @@ function seConnecter($login, $username1, $candidate_password){
     }
 };
 
+// Fonction qui verifie si l'utilisateur est bien connecté lorsqu'il navigue entre les pages.
+// Vérifie également si le compte est autorisé à se connecter via la fonction 'checkAccountState()'
 function checkLogin(){
     if(!isset($_SESSION["username"])) { 
         http_response_code(302);
@@ -121,6 +131,11 @@ function checkLogin(){
     checkAccountState();
 };
 
+
+// Verifie si le compte est autorisé à se connecter
+// * $monUser : Les données de mon utilisateur que je récupère depuis la base de donnée.
+// * $userAccountState : Donne un chiffre entre 0 et 1. Le premier signifiant que le compte est
+//                       autorisé à se connecter tandis que le second indique que le compte n'y est pas autorisé.
 function checkAccountState(){
     $monUser = fromTableUsers();
     $userAccountState= $monUser["account_state"];
@@ -131,6 +146,10 @@ function checkAccountState(){
     } 
 };
 
+// Fonction qui permet de désactiver, réactiver ou supprimer son compte par requête SQL.
+// * $desactiverCompte : Variable qui me permet de savoir si le bouton 'desactiverCompte' a été enclenché par l'utilisateur
+// * $reactiverCompte : Variable qui me permet de savoir si le bouton 'reactiverCompte' a été enclenché par l'utilisateur
+// * $supprimerCompte : Variable qui me permet de savoir si le bouton 'supprimerCompte' a été enclenché par l'utilisateur
 function gererMonCompte(){
     $desactiverCompte = filter_input(INPUT_POST, "desactiverCompte");
     $reactiverCompte = filter_input(INPUT_POST, "reactiverCompte");
@@ -178,7 +197,15 @@ function gererMonCompte(){
 
 
 
-
+// Fonction qui permet à l'utilisateur d'upload une image sur le serveur.
+// * $nameOfTheInput : Nom de la balise 'input' qui permet l'upload.
+// * $destination : Variable qui me permet de diriger le fichier vers le repertoire 'profil' ou le repertoire 'post'
+//                  si l'utilisateur upload une image pour son profil (photo de profil) ou bien une image pour
+//                  accompagner un post. 
+// * $error : Petite variable qui est égal à 0 si l'upload a été un succès, sinon elle est égal à 1.
+// * $myFilePath : Le répertoire final sur le serveur ou sera stockée l'image.
+// Petit information complémentaire : Si $destination == "post" alors cette fonction nous renvoie $myFilePath
+// qui est le chemin vers l'image.
 function uploadMaPhoto($nameOfTheInput, $destination){
     $error = 0;
     if(isset($_FILES[$nameOfTheInput]) && $_FILES[$nameOfTheInput]['error'] == 0){
@@ -231,6 +258,7 @@ function uploadMaPhoto($nameOfTheInput, $destination){
     };
 };
 
+// Fonction similaire à la fonction 'uploadMaPhoto($nameOfTheInput, $destination)' 
 function uploadMaBanniere(){
     $error = 0;
     if(isset($_FILES['banner']) && $_FILES['banner']['error'] == 0){
@@ -277,6 +305,8 @@ function uploadMaBanniere(){
 
 };
 
+// Fonction qui permet à l'utilisateur de changer sa description
+// * $laNouvelleDescription : La nouvelle description que l'utilisateur souhaite affecter à son profil
 function changeDescriptionUser($laNouvelleDescription){
     require("../pdo/pdo.php");
     $id = $_SESSION["id"];
@@ -288,6 +318,10 @@ function changeDescriptionUser($laNouvelleDescription){
     ]);
 };
 
+// Fonction qui permet de récupérer toutes les informations sur le profil d'un utilisateur grâce à son id.
+// * $id : L'id de l'utilisateur dont on veux récupérer les données.
+//         Si l'id n'est pas spécifié (c'est à dire $id = ""), alors il prendra la valeur de l'id de la session en cours.
+// * $result : Variable qui contient les informations qui ont été récupérées depuis la base de donnée.
 function fromTableProfil($id){
     require("../pdo/pdo.php");
     if(!$id){
@@ -301,13 +335,14 @@ function fromTableProfil($id){
     return $result;
 };
 
-
+// Créer une balise qui affiche l'image de profil de l'utilisateur en fonction de l'id
 function afficherMonImageDeProfil($id){
     $result = fromTableProfil($id);
     $imageDeMonUser = $result["profil_picture"];
     echo "<div id='picture'><img style='width : 100%; height : 100% ; object-fit : cover;' src='$imageDeMonUser' alt='Image de profil'></div>";
 };
 
+// Créer une balise qui affiche la bannière de profil de l'utilisateur en fonction de l'id
 function afficherMaBanniere($id){
     $result = fromTableProfil($id);
     $banniereDeMonUser = $result["banner"];
@@ -315,12 +350,14 @@ function afficherMaBanniere($id){
     
 };
 
+// Créer une balise qui affiche la description du profil de l'utilisateur en fonction de l'id
 function afficherMaBiographie($id){
     $result = fromTableProfil($id);
     $bioDeMonUser = $result["description"];
     echo "<h3>$bioDeMonUser</h3>";
 };
 
+// Affiche le nom de l'utilisateur en fonction de l'id
 function afficherMonUsername($username){
     if(!$username){
         echo $_SESSION["username"];
@@ -329,6 +366,10 @@ function afficherMonUsername($username){
     
 };
 
+
+// Fonction qui permet de récupérer toutes les informations de l'utilisateur en fonction de son id.
+// * $id : L'id de l'utilisateur dont on veux récupérer les données.
+// * $result : Variable qui contient les informations qui ont été récupérées depuis la base de donnée.
 function fromTableUsers(){
     require("../pdo/pdo.php");
     $id = $_SESSION["id"];
@@ -340,7 +381,10 @@ function fromTableUsers(){
     return $result;
 };
 
-
+// Fonction qui permet à l'utilisateur de changer ses informations personnelles.
+// * $userInfos : Variable qui contient les données de l'utilisateur issue de la table 'users'
+//                Elle me sert à ne permettre à mon utilisateur de changer son pays si et seulement
+//                si le nouveau pays est différent du pays qui est stocké dans la table 'users'.
 function changerInfoPerso($userInfos){
     if($_SERVER["REQUEST_METHOD"] == "POST"){
        
@@ -435,6 +479,12 @@ function changerInfoPerso($userInfos){
     }
 };
 
+// Fonction qui permet à l'utilisateur de changer son mot de passe 
+// * $actualPassword : Le mot de passe actuel de l'utilisateur
+// * $newPassword : Le nouveau mot de passe 
+// * $newPasswordConfirmed : Un confirmation du nouveau mot de passe
+// * $donneeDeMonUser : Variable qui contient les données de l'utilisateur issue de la table 'users' de la base de donnée
+// * $hashPassword : Crypte la variable $newPassword avant de la stocker dans la base de donnée.
 function changePassword(){
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $actualPassword = filter_input(INPUT_POST, "actualPassword");
@@ -475,6 +525,13 @@ function changePassword(){
     
 };
 
+// Fonction qui permet de créer une publication qui apparaitra sur le profil de l'utilisateur.
+// Une publication comporte : Un titre, un Texte et eventuellement une Image.
+// * $monCheminImage : Cette variable représente le chemin vers l'image. 
+//                     Pour obtenir le chemin vers l'image, j'utilise la fonction 'uploadMaPhoto($nameOfTheInput, $destination)'
+//                     avec $destination == "post".
+// * $textePublication : Le nouveau mot de passe 
+// * $titrePublication : Un confirmation du nouveau mot de passe
 function creerUnePublication($monCheminImage, $textePublication, $titrePublication){
     require("../pdo/pdo.php");
     $id = $_SESSION["id"];
@@ -495,6 +552,10 @@ function creerUnePublication($monCheminImage, $textePublication, $titrePublicati
         
 }
 
+// Fonction qui permet de récupérer toutes les informations sur les posts d'un utilisateur grâce à son id.
+// * $id : L'id de l'utilisateur dont on veux récupérer les données.
+//         Si l'id n'est pas spécifié (c'est à dire $id = ""), alors il prendra la valeur de l'id de la session en cours.
+// * $result : Variable qui contient les informations qui ont été récupérées depuis la base de donnée.
 function fromTablePost($id){
     require("../pdo/pdo.php");
     if(!$id){
@@ -509,15 +570,20 @@ function fromTablePost($id){
     return $result;
 }
 
+
+// Fonction qui permet d'afficher tous les posts d'un utilisateur en fonction de son id.
+// * $id : L'id de l'utilisateur dont on veux afficher les posts.
+//         Si l'id n'est pas spécifié (c'est à dire $id = ""), alors il prendra la valeur de l'id de la session en cours. 
+//         (voir fonction 'fromTablePost($id)')
+// Petite information complémentaire : Les balises des posts existent en deux versions avec une fonctionnalité qui leur est unique. 
+//                                       Une version propriétaire qui permet de supprimer la publication. 
+//                                       Et une seconde version publique qui permet de commenter la publication.
 function afficherMesPublications($id){
     if(!$id){
         $mesPosts = fromTablePost("");
     }else{
         $mesPosts = fromTablePost($id);
     }
-    
-   
-   
     
     foreach($mesPosts as $valueMesPosts){
         
@@ -555,6 +621,11 @@ function afficherMesPublications($id){
     
 };
 
+
+
+// Fonction qui permet à un visiteur de commenter la publication
+// * $idVisiteur : Le mot de passe actuel de l'utilisateur
+// * $sendCommentaire : Variable qui permet de savoir si le bouton 'sendCommentaire' a été enclenché par l'utilisateur
 function commenterUnePublication($idVisiteur){
     $sendCommentaire = filter_input(INPUT_POST, "sendCommentaire");
 
@@ -579,7 +650,8 @@ function commenterUnePublication($idVisiteur){
 };
 
 
-
+// Fonction qui permet de supprimer une publication
+// * $idDuPost : Représente l'id du post dans la table 'post' de la base de donnée
 function supprimerPublication($idDuPost){  
     require("../pdo/pdo.php");
     $maRequete = $pdo->prepare("DELETE FROM post where id = :publicationId");
@@ -591,6 +663,8 @@ function supprimerPublication($idDuPost){
     
 };
 
+// Fonction qui récupère toutes les informations de la table 'friendlist' en fonction de l'id de l'utilisateur.
+// * $result : Contient les informations issue de la table 'friendlist' de la base de donnée
 function afficherMaListeAmi(){
     $id = $_SESSION["id"];
     require("../pdo/pdo.php");
@@ -604,6 +678,8 @@ function afficherMaListeAmi(){
 
 };
 
+// Fonction qui permet de supprimer un utilisateur de sa liste d'ami en fonction de son id.
+// * $friend_id : L'id de la personne que l'on souhaite supprimer de sa liste d'ami.
 function supprimerUnAmi($friend_id){
     require("../pdo/pdo.php");
     $maRequete = $pdo->prepare("DELETE FROM friendlist where friend_id=:friend_id");
