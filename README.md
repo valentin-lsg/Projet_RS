@@ -29,7 +29,7 @@ communautaires, échanger par messagerie instantanée...
 | Création d'un fichier unique pour chaque utilisateur sur le serveur à l'inscription                   | ✅             | |
 | Upload de manière sécurisée une image sur le serveur                                                  | ✅             | |
 | Stocker les données de l'utilisateur de manière sécurisée en utilisant les méthodes adaptées.                                          | ✅             | |
-| Système de messagerie instantanée pour pouvoir communiquer avec les autres membres.                                          | ❌             | Problème de compatibilité entre navigateur -> Retrait de la fonctionnalité en attendant une correction|
+| Système de messagerie instantanée pour pouvoir communiquer avec les autres membres.                                          | ❌             | Problème de compatibilité sur certains navigateurs -> Retrait de la fonctionnalité en attendant une correction|
 
 
 ## Fonctionnalité que j'aimerai ajouter dans le futur
