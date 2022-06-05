@@ -32,7 +32,7 @@ communautaires, échanger par messagerie instantanée...
 | Système de messagerie instantanée pour pouvoir communiquer avec les autres membres.                                          | ❌             | Problème de compatibilité sur certains navigateurs -> Retrait de la fonctionnalité en attendant une correction|
 
 
-## Fonctionnalité que j'aimerai ajouter dans le futur
+## Les fonctionnalités que j'aimerais ajouter dans le futur
 
 | Fonctionnalité             | 
 | ------------------- |
