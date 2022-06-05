@@ -32,5 +32,23 @@ communautaires, échanger par messagerie instantanée...
 | Système de messagerie instantanée pour pouvoir communiquer avec les autres membres.                                          | ❌             | Problème de compatibilité entre navigateur -> Retrait de la fonctionnalité en attendant une correction|
 
 
+## Fonctionnalité que j'aimerai ajouter dans le futur
 
-
+| Fonctionnalité             | 
+| ------------------- |
+| Réagir à une publication ou à un commentaire avec un émoji       |
+|  Créer un groupe (public/privé)                                                            |
+|  S'inscrire dans un groupe public ou candidater à un groupe privé                                                   |
+| Voir les publications des groupes publics                                                                  |
+| En tant que membre :  voir, publier et réagir à des publications au sein d'un groupe privé       |
+|  Inviter ses relations dans son groupe                                                            |
+| --------------------------------------------                       |
+| En tant qu'admin d'un groupe :                                                                  |
+| Accepter ou refuser les candidatures à un groupe privé       |
+|  Attribuer et changer les droits d'un utilisateur de son groupe                                                            |
+|  Exclure un membre d'un groupe                                                   |
+|  Changer les informations d'un groupe                                                                 |
+| Réagir à une publication ou à un commentaire avec un émoji       |
+|  créer un groupe (public/privé)                                                            |
+|  s'inscrire dans un groupe public ou candidater à un groupe privé                                                   |
+|  voir les publications des groupes publics                                                                  |
