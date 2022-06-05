@@ -56,6 +56,6 @@ communautaires, échanger par messagerie instantanée...
 |  Ajouter ou supprimer des admins à ces pages                                                                 |
 |  Modifier les contenues de la page (nom, description, image)                                                               |
 | --------------------------------------------                       |
-|  Trouver une solution pour rendre la messagerie fonctionnelle sur tout les navigateurs.                                                              |
+|  Rendre la messagerie fonctionnelle sur tout les navigateurs.                                                              |
 |  Refonte visuelle du site                                                               |
 
