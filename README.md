@@ -40,15 +40,22 @@ communautaires, échanger par messagerie instantanée...
 |  Créer un groupe (public/privé)                                                            |
 |  S'inscrire dans un groupe public ou candidater à un groupe privé                                                   |
 | Voir les publications des groupes publics                                                                  |
-| En tant que membre :  voir, publier et réagir à des publications au sein d'un groupe privé       |
+| --------------------------------------------                       |
+| En tant que membre d'un groupe :  voir, publier et réagir à des publications       |
 |  Inviter ses relations dans son groupe                                                            |
 | --------------------------------------------                       |
 | En tant qu'admin d'un groupe :                                                                  |
 | Accepter ou refuser les candidatures à un groupe privé       |
 |  Attribuer et changer les droits d'un utilisateur de son groupe                                                            |
 |  Exclure un membre d'un groupe                                                   |
-|  Changer les informations d'un groupe                                                                 |
-| Réagir à une publication ou à un commentaire avec un émoji       |
-|  créer un groupe (public/privé)                                                            |
-|  s'inscrire dans un groupe public ou candidater à un groupe privé                                                   |
-|  voir les publications des groupes publics                                                                  |
+|  Changer les informations du groupe                                                                 |
+| --------------------------------------------                       |
+| Créer des pages publiques       |
+|  Visualiser le contenu de ses pages                                                            |
+|  En tant qu'admin de la page :                                                   |
+|  Ajouter ou supprimer des admins à ces pages                                                                 |
+|  Modifier les contenues de la page (nom, description, image)                                                               |
+| --------------------------------------------                       |
+|  Trouver une solution pour rendre la messagerie fonctionnelle sur tout les navigateurs.                                                              |
+|  Refonte visuelle du site                                                               |
+
